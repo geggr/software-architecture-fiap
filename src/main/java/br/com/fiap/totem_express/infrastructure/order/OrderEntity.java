@@ -50,4 +50,14 @@ public class OrderEntity {
     public Long getId() {
         return id;
     }
+
+    //TODO colocar o usuário bonitinho quando implementarem a parte de usuários
+    public static Order toDomain(OrderEntity orderEntity) {
+        return new Order(
+                orderEntity.createdAt,
+                orderEntity.updatedAt,
+                orderEntity.items.stream().map(OrderItemEntity::toDomain).collect(Collectors.toSet()),
+                new User("bla", "ble", "bli")
+        );
+    }
 }

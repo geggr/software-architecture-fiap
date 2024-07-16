@@ -34,6 +34,12 @@ public class OrderItem {
     public BigDecimal getPrice() {
         return price;
     }
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+    public Long getId() {
+        return id;
+    }
 
     
 }

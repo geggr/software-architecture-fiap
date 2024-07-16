@@ -17,4 +17,23 @@ public class Product {
         return this.price;
     }
 
+    public Long getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public String getImagePath() {
+        return imagePath;
+    }
+
+    public Category getCategory() {
+        return category;
+    }
 }

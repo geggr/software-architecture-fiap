@@ -29,6 +29,8 @@ public class OrderEntity {
 
     //TODO substituir pela entidade do User quando estiver feita
     private Long user_id;
+
+    @Enumerated(EnumType.STRING)
     private Status status = Status.RECEIVED;
 
     @Deprecated

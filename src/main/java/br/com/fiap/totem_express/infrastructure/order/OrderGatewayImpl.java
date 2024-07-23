@@ -5,10 +5,9 @@ import br.com.fiap.totem_express.domain.order.*;
 import org.springframework.stereotype.*;
 
 import java.util.*;
-import java.util.stream.*;
 
 @Component
-public class OrderGatewayImpl implements OrderGatewayI {
+public class OrderGatewayImpl implements OrderGateway {
 
     private final OrderRepository orderRepository;
 

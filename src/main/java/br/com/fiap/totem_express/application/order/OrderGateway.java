@@ -4,6 +4,6 @@ import br.com.fiap.totem_express.domain.order.*;
 
 import java.util.*;
 
-public interface OrderGatewayI {
+public interface OrderGateway {
     List<Order> findAll();
 }

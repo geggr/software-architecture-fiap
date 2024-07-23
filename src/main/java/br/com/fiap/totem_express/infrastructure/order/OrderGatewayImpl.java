@@ -6,7 +6,6 @@ import org.springframework.stereotype.*;
 
 import java.util.*;
 
-@Component
 public class OrderGatewayImpl implements OrderGateway {
 
     private final OrderRepository orderRepository;
@@ -19,4 +18,5 @@ public class OrderGatewayImpl implements OrderGateway {
     public List<Order> findAll() {
         return orderRepository.findAll().stream().map(OrderEntity::toDomain).toList();
     }
+
 }

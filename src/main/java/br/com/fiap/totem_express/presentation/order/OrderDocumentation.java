@@ -15,6 +15,7 @@ public interface OrderDocumentation {
     @Operation(summary = "Lista pedidos cadastrados", description = "Retorna todos os pedidos cadastrados sem diferenciação de status ou cliente")
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = OrderView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Quando não tem pedidos cadastrados",content = @Content(schema = @Schema(implementation = Void.class))),
             @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
     })
     ResponseEntity list();

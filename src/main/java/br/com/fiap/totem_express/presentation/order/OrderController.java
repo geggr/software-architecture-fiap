@@ -1,24 +1,24 @@
 package br.com.fiap.totem_express.presentation.order;
 
-import br.com.fiap.totem_express.application.order.*;
-import io.swagger.v3.oas.annotations.*;
-import org.springframework.http.*;
-import org.springframework.stereotype.*;
-import org.springframework.web.bind.annotation.*;
+import br.com.fiap.totem_express.application.order.ListOrderUseCase;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 
-import java.util.*;
+import java.util.List;
 
 @Controller
-public class OrderController {
-    private ListOrderUseCase listOrderUseCase;
+public class OrderController implements OrderDocumentation {
+
+    private final ListOrderUseCase listOrderUseCase;
 
     public OrderController(ListOrderUseCase listOrderUseCase) {
         this.listOrderUseCase = listOrderUseCase;
     }
 
-    @Operation(method = "/api/order/list", summary = "Lista pedidos do sistema")
+    @Override
     @GetMapping("/api/order/list")
-    ResponseEntity<List<OrderView>> list() {
+    public ResponseEntity<List<OrderView>> list() {
         List<OrderView> orders = listOrderUseCase.list();
         return ResponseEntity.ok(orders);
     }

@@ -19,7 +19,7 @@ public class OrderController implements OrderDocumentation {
     @Override
     @GetMapping("/api/order/list")
     public ResponseEntity<List<OrderView>> list() {
-        List<OrderView> orders = listOrderUseCase.list();
+        List<OrderView> orders = listOrderUseCase.execute();
         if(orders.isEmpty()){
             return ResponseEntity.noContent().build();
         }

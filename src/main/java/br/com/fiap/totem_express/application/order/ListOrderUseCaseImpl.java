@@ -16,7 +16,7 @@ public class ListOrderUseCaseImpl implements ListOrderUseCase {
     }
 
     @Override
-    public List<OrderView> list() {
+    public List<OrderView> execute() {
         return orderGateway.findAll().stream().map(Order::toView).toList();
     }
 }

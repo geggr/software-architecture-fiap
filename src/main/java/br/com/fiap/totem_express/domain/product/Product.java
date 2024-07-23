@@ -2,6 +2,10 @@ package br.com.fiap.totem_express.domain.product;
 
 import java.math.BigDecimal;
 
+import org.hibernate.sql.Update;
+
+import br.com.fiap.totem_express.application.product.input.UpdateProductInput;
+
 
 public class Product {
 
@@ -53,5 +57,12 @@ public class Product {
         return this.description;
     }
     
-
+    public void update(UpdateProductInput input){
+        this.id = input.id();
+        this.name = input.name();
+        this.description = input.description();
+        this.imagePath = input.imagePath();
+        this.price = input.price();
+        this.category = input.category();
+    }
 }

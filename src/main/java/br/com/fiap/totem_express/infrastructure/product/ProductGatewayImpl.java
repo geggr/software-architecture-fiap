@@ -1,5 +1,7 @@
 package br.com.fiap.totem_express.infrastructure.product;
 
+import java.util.Optional;
+
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.domain.product.Product;
 
@@ -25,6 +27,11 @@ public class ProductGatewayImpl implements ProductGateway {
             throw new IllegalArgumentException("Product with id: " + id + " not found");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public Optional<Product> findById(Long id) {
+        return repository.findById(id).map(ProductEntity::toDomain);
     }
 
 }

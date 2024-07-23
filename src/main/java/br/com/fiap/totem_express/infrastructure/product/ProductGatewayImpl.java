@@ -19,4 +19,12 @@ public class ProductGatewayImpl implements ProductGateway {
         return domain;
     }
 
+    @Override
+    public void delete(Long id) {
+        if (!repository.existsById(id)) {
+            throw new IllegalArgumentException("Product with id: " + id + " not found");
+        }
+        repository.deleteById(id);
+    }
+
 }

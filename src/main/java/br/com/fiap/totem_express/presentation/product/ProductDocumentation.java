@@ -7,5 +7,6 @@ import br.com.fiap.totem_express.presentation.product.request.CreateProductReque
 
 public interface ProductDocumentation {
     ResponseEntity<NewProductView> create(CreateProductRequest request);
+    ResponseEntity<Void> delete(Long id);
 }
 

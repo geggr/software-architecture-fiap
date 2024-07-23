@@ -4,4 +4,5 @@ import br.com.fiap.totem_express.domain.product.Product;
 
 public interface ProductGateway {
     Product save(Product product);
+    void delete(Long id);
 }

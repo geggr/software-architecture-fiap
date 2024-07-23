@@ -4,8 +4,10 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import br.com.fiap.totem_express.application.product.CreateProductUseCase;
+import br.com.fiap.totem_express.application.product.DeleteProductUseCase;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.product.impl.CreateProductUseCaseImpl;
+import br.com.fiap.totem_express.application.product.impl.DeleteProductUseCaseImpl;
 import br.com.fiap.totem_express.infrastructure.product.ProductGatewayImpl;
 import br.com.fiap.totem_express.infrastructure.product.ProductRepository;
 
@@ -26,5 +28,10 @@ public class ProductConfiguration {
     @Bean
     public CreateProductUseCase createProductUseCase() {
         return new CreateProductUseCaseImpl(productGateway());
+    }
+
+    @Bean
+    public DeleteProductUseCase deleteProductUseCase() {
+        return new DeleteProductUseCaseImpl(productGateway());
     }
 }

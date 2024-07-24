@@ -2,8 +2,6 @@ package br.com.fiap.totem_express.domain.product;
 
 import java.math.BigDecimal;
 
-import org.hibernate.sql.Update;
-
 import br.com.fiap.totem_express.application.product.input.UpdateProductInput;
 
 

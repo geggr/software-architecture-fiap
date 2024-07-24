@@ -6,12 +6,17 @@ import br.com.fiap.totem_express.domain.product.Category;
 
 public interface NewProductView {
     Long id();
+
     String name();
+
     String description();
+
     String imagePath();
+
     BigDecimal price();
+
     Category category();
-    
+
     record CreatedView(
             Long id,
             String name,

@@ -1,5 +1,7 @@
 package br.com.fiap.totem_express.presentation.product;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 
 import br.com.fiap.totem_express.application.product.output.NewProductView;
@@ -11,5 +13,6 @@ public interface ProductDocumentation {
     ResponseEntity<NewProductView> create(CreateProductRequest request);
     ResponseEntity<Void> delete(Long id);
     ResponseEntity<UpdateProductView> update(UpdateProductRequest request);
+    ResponseEntity<List<NewProductView>> findAllByCategory(String category);
 }
 

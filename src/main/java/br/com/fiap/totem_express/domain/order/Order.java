@@ -51,8 +51,4 @@ public class Order {
     public Status getStatus() {
         return status;
     }
-
-    public OrderView toView() {
-        return new OrderView(this);
-    }
 }

@@ -4,16 +4,16 @@ import br.com.fiap.totem_express.application.product.DeleteProductUseCase;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 
 public class DeleteProductUseCaseImpl implements DeleteProductUseCase {
-    
-    private final ProductGateway productGateway;
 
-    public DeleteProductUseCaseImpl(ProductGateway productGateway) {
-        this.productGateway = productGateway;
+    private final ProductGateway gateway;
+
+    public DeleteProductUseCaseImpl(ProductGateway gateway) {
+        this.gateway = gateway;
     }
 
     @Override
     public void delete(Long id) {
-        productGateway.delete(id);
+        gateway.delete(id);
     }
-    
+
 }

@@ -3,8 +3,8 @@ package br.com.fiap.totem_express.application.product;
 import java.util.Optional;
 
 import br.com.fiap.totem_express.application.product.input.UpdateProductInput;
-import br.com.fiap.totem_express.application.product.output.UpdateProductView;
+import br.com.fiap.totem_express.application.product.output.ProductView;
 
 public interface UpdateProductUseCase {
-    Optional<UpdateProductView> update(UpdateProductInput input);
+    Optional<ProductView> update(UpdateProductInput input);
 }

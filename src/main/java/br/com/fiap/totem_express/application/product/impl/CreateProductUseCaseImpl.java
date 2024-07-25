@@ -3,30 +3,30 @@ package br.com.fiap.totem_express.application.product.impl;
 import br.com.fiap.totem_express.application.product.CreateProductUseCase;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.product.input.NewProductInput;
-import br.com.fiap.totem_express.application.product.output.NewProductView;
+import br.com.fiap.totem_express.application.product.output.ProductView;
 import br.com.fiap.totem_express.domain.product.Product;
 
-public class CreateProductUseCaseImpl implements CreateProductUseCase{
+public class CreateProductUseCaseImpl implements CreateProductUseCase {
 
-    private final ProductGateway productGateway;
-    
-    public CreateProductUseCaseImpl(ProductGateway productGateway) {
-        this.productGateway = productGateway;
+    private final ProductGateway gateway;
+
+    public CreateProductUseCaseImpl(ProductGateway gateway) {
+        this.gateway = gateway;
     }
 
     @Override
-    public NewProductView create(NewProductInput input) {
+    public ProductView create(NewProductInput input) {
         Product domain = input.toDomain();
-        Product createdProduct = productGateway.save(domain);
+        Product product = gateway.save(domain);
 
-        return new NewProductView.CreatedView(
-                createdProduct.getId(),
-                createdProduct.getName(),
-                createdProduct.getDescription(),
-                createdProduct.getImagePath(),
-                createdProduct.getPrice(),
-                createdProduct.getCategory()
+        return new ProductView.SimpleView(
+                product.getId(),
+                product.getName(),
+                product.getDescription(),
+                product.getImagePath(),
+                product.getPrice(),
+                product.getCategory()
         );
     }
-    
+
 }

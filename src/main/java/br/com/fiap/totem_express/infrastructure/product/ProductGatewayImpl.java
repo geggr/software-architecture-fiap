@@ -17,10 +17,14 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product save(Product product) {
-        ProductEntity productEntity = new ProductEntity(product);
-        ProductEntity save = repository.save(productEntity);
-        Product domain = save.toDomain();
-        return domain;
+        Optional<ProductEntity> possibleProduct = repository.findById(product.getId());
+
+        possibleProduct.ifPresentOrElse(
+            productEntity -> productEntity.updateFromDomain(product),
+            () -> repository.save(new ProductEntity(product))
+        );
+
+        return product;
     }
 
     @Override

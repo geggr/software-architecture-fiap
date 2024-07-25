@@ -3,80 +3,77 @@ package br.com.fiap.totem_express.presentation.product;
 import java.util.List;
 import java.util.Optional;
 
+import br.com.fiap.totem_express.application.product.output.ProductView;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.DeleteMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import br.com.fiap.totem_express.application.product.CreateProductUseCase;
 import br.com.fiap.totem_express.application.product.DeleteProductUseCase;
 import br.com.fiap.totem_express.application.product.FindProductsByCategoryUseCase;
 import br.com.fiap.totem_express.application.product.UpdateProductUseCase;
-import br.com.fiap.totem_express.application.product.output.NewProductView;
-import br.com.fiap.totem_express.application.product.output.UpdateProductView;
 import br.com.fiap.totem_express.domain.product.Category;
 import br.com.fiap.totem_express.presentation.product.request.CreateProductRequest;
 import br.com.fiap.totem_express.presentation.product.request.UpdateProductRequest;
 import jakarta.transaction.Transactional;
-import jakarta.validation.Valid;
 
 @RestController
 public class ProductController implements ProductDocumentation {
 
-    private final CreateProductUseCase createProductUseCase;
-    private final DeleteProductUseCase deleteProductUseCase;
-    private final UpdateProductUseCase updateProductUseCase;
-    private final FindProductsByCategoryUseCase findProductsByCategoryUseCase;
+    private final CreateProductUseCase createUseCase;
+    private final DeleteProductUseCase deleteUseCase;
+    private final UpdateProductUseCase updateUseCase;
+    private final FindProductsByCategoryUseCase findAllByCategoryUseCase;
 
-    public ProductController(CreateProductUseCase createProductUseCase, DeleteProductUseCase deleteProductUseCase,
-     UpdateProductUseCase updateProductUseCase, FindProductsByCategoryUseCase findProductsByCategoryUseCase) {
-        this.createProductUseCase = createProductUseCase;
-        this.deleteProductUseCase = deleteProductUseCase;
-        this.updateProductUseCase = updateProductUseCase;
-        this.findProductsByCategoryUseCase = findProductsByCategoryUseCase;
+    public ProductController(CreateProductUseCase createUseCase, DeleteProductUseCase deleteUseCase,
+                             UpdateProductUseCase updateUseCase, FindProductsByCategoryUseCase findAllByCategoryUseCase) {
+        this.createUseCase = createUseCase;
+        this.deleteUseCase = deleteUseCase;
+        this.updateUseCase = updateUseCase;
+        this.findAllByCategoryUseCase = findAllByCategoryUseCase;
     }
 
     @Override
     @Transactional
-    @PostMapping("/api/product/create")
-    public ResponseEntity<NewProductView> create(CreateProductRequest request) {
-        NewProductView createProduct = createProductUseCase.create(request);
-        return ResponseEntity.ok(createProduct);
+    @PostMapping("/api/product")
+    public ResponseEntity<ProductView> create(@RequestBody @Valid CreateProductRequest request) {
+        final var view = createUseCase.create(request);
+        return ResponseEntity.ok(view);
     }
 
     @Override
     @Transactional
-    @DeleteMapping("/api/product/delete/{id}")
+    @DeleteMapping("/api/product/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
-        deleteProductUseCase.delete(id);
+        deleteUseCase.delete(id);
         return ResponseEntity.noContent().build();
     }
 
     @Override
     @Transactional
-    @PutMapping("/api/product/update")
-    public ResponseEntity<UpdateProductView> update(UpdateProductRequest request) {
-        Optional<UpdateProductView> possibleUpdateProduct = updateProductUseCase.update(request);
-        return possibleUpdateProduct.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    @PutMapping("/api/product")
+    public ResponseEntity<ProductView> update(@PathVariable Long id, @RequestBody @Valid UpdateProductRequest request) {
+        if (!id.equals(request.id())) return ResponseEntity.noContent().build();
+
+        Optional<ProductView> possibleUpdateProduct = updateUseCase.update(request);
+        if (possibleUpdateProduct.isEmpty()) return ResponseEntity.notFound().build();
+
+        final var view = possibleUpdateProduct.get();
+        return ResponseEntity.ok(view);
     }
 
     @Override
     @Transactional
-    @GetMapping("/api/product/{category}")
-    public ResponseEntity<List<NewProductView>> findAllByCategory(@PathVariable String category) {
-        Optional<Category> possibleCategory = Category.findByName(category);
-        if (possibleCategory.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        Category categoryName = possibleCategory.get();
-        List<NewProductView> products = findProductsByCategoryUseCase.findAllByCategory(categoryName);
-        if (products.isEmpty()){
-            return ResponseEntity.noContent().build();
-        }
-        return ResponseEntity.ok(products);
-    }
+    @GetMapping("/api/product/{categoryName}")
+    public ResponseEntity<List<ProductView>> find(@PathVariable String categoryName) {
+        Optional<Category> possibleCategory = Category.findByName(categoryName);
+        if (possibleCategory.isEmpty()) return ResponseEntity.notFound().build();
 
+        Category category = possibleCategory.get();
+        List<ProductView> view = findAllByCategoryUseCase.findAllByCategory(category);
+
+        if (view.isEmpty()) return ResponseEntity.noContent().build();
+
+        return ResponseEntity.ok(view);
+    }
 }

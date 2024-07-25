@@ -4,7 +4,8 @@ import java.math.BigDecimal;
 
 import br.com.fiap.totem_express.domain.product.Category;
 
-public interface NewProductView {
+public interface ProductView {
+
     Long id();
 
     String name();
@@ -17,11 +18,12 @@ public interface NewProductView {
 
     Category category();
 
-    record CreatedView(
+    record SimpleView(
             Long id,
             String name,
             String description,
             String imagePath,
             BigDecimal price,
-            Category category) implements NewProductView {}
+            Category category) implements ProductView {
+    }
 }

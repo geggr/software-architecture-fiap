@@ -1,6 +1,7 @@
 package br.com.fiap.totem_express.presentation.product.request;
 
 import java.math.BigDecimal;
+import java.time.LocalDateTime;
 
 import br.com.fiap.totem_express.application.product.input.UpdateProductInput;
 import br.com.fiap.totem_express.domain.product.Category;
@@ -19,6 +20,6 @@ public record UpdateProductRequest(
 
     @Override
     public Product toDomain() {
-        return new Product(id, name, description, imagePath, price, category);
+        return new Product(id, name, description, imagePath, price, category, LocalDateTime.now());
     }
 }

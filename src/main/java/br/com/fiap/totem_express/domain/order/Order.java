@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import br.com.fiap.totem_express.domain.user.User;
+import br.com.fiap.totem_express.presentation.order.*;
 
 public class Order {
     private Long id;
@@ -22,5 +23,32 @@ public class Order {
         this.user = user;
         this.total = items.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
-    
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public LocalDateTime getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public Set<OrderItem> getItems() {
+        return items;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }

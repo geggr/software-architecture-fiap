@@ -47,12 +47,16 @@ public class Product {
         return this.price;
     }
 
-    public String getName() {
-        return this.name;
-    }
-
     public Long getId() {
         return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getDescription() {
+        return description;
     }
 
     public String getImagePath() {
@@ -62,11 +66,7 @@ public class Product {
     public Category getCategory() {
         return category;
     }
-
-    public String getDescription() {
-        return this.description;
-    }
-
+    
     public void update(UpdateProductInput input) {
         this.id = input.id();
         this.name = input.name();
@@ -88,4 +88,5 @@ public class Product {
             throw new IllegalArgumentException("Price must be positive");
         if (category == null) throw new IllegalArgumentException("Category cannot be null");
     }
+
 }

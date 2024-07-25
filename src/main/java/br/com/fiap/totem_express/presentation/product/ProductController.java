@@ -51,10 +51,8 @@ public class ProductController implements ProductDocumentation {
 
     @Override
     @Transactional
-    @PutMapping("/api/product")
-    public ResponseEntity<ProductView> update(@PathVariable Long id, @RequestBody @Valid UpdateProductRequest request) {
-        if (!id.equals(request.id())) return ResponseEntity.noContent().build();
-
+    @PutMapping("/api/product/")
+    public ResponseEntity<ProductView> update(@RequestBody @Valid UpdateProductRequest request) {
         Optional<ProductView> possibleUpdateProduct = updateUseCase.update(request);
         if (possibleUpdateProduct.isEmpty()) return ResponseEntity.notFound().build();
 

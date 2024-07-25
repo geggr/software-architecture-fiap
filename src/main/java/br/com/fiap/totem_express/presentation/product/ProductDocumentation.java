@@ -18,7 +18,7 @@ public interface ProductDocumentation {
     ResponseEntity<Void> delete(Long id);
 
     @Operation(summary = "Update a product", description = "Updates the product with the given details")
-    ResponseEntity<ProductView> update(Long id, UpdateProductRequest request);
+    ResponseEntity<ProductView> update(UpdateProductRequest request);
 
     @Operation(summary = "Find products by category", description = "Returns all products according to category")
     ResponseEntity<List<ProductView>> find(String category);

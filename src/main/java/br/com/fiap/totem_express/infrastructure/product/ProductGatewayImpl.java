@@ -17,15 +17,17 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product save(Product product) {
-        Optional<ProductEntity> possibleProduct = repository.findById(product.getId());
+        Optional<ProductEntity> existingEntity = product.getId() == null
+                ? Optional.empty()
+                : repository.findById(product.getId());
 
-        possibleProduct.ifPresentOrElse(
-            productEntity -> productEntity.updateFromDomain(product),
-            () -> repository.save(new ProductEntity(product))
-        );
+        final var savedEntity = existingEntity
+                .orElseGet(() -> repository.save(new ProductEntity(product)))
+                .updateFromDomain(product);
 
-        return product;
+        return savedEntity.toDomain();
     }
+
 
     @Override
     public void delete(Long id) {

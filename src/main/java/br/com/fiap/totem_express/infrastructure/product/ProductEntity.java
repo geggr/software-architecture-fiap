@@ -52,13 +52,14 @@ public class ProductEntity {
         this.category = product.getCategory();
     }
 
-    public void updateFromDomain(Product product) {
+    public ProductEntity updateFromDomain(Product product) {
         this.name = product.getName();
         this.description = product.getDescription();
         this.imagePath = product.getImagePath();
         this.price = product.getPrice();
         this.category = product.getCategory();
         this.updatedAt = LocalDateTime.now();
+        return this;
     }
 
     public Product toDomain() {

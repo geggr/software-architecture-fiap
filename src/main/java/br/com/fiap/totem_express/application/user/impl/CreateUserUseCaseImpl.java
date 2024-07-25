@@ -3,7 +3,7 @@ package br.com.fiap.totem_express.application.user.impl;
 import br.com.fiap.totem_express.application.user.CreateUserUseCase;
 import br.com.fiap.totem_express.application.user.UserGateway;
 import br.com.fiap.totem_express.application.user.input.NewUserInput;
-import br.com.fiap.totem_express.application.user.output.CreatedUserView;
+import br.com.fiap.totem_express.application.user.output.DefaultUserView;
 
 public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
@@ -14,7 +14,7 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
     }
 
     @Override
-    public CreatedUserView execute(NewUserInput input) {
+    public DefaultUserView execute(NewUserInput input) {
 
         if (gateway.existsByEmailOrCPF(input.email(), input.cpf())) {
             throw new RuntimeException("User already exists");
@@ -24,7 +24,7 @@ public class CreateUserUseCaseImpl implements CreateUserUseCase {
 
         final var created = gateway.create(domain);
 
-        return new CreatedUserView.SimpleCreatedView(
+        return new DefaultUserView(
                 created.getId(),
                 created.getName()
         );

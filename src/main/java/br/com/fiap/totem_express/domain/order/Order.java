@@ -5,6 +5,7 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import br.com.fiap.totem_express.domain.user.User;
+import br.com.fiap.totem_express.presentation.order.*;
 
 public class Order {
     private Long id;

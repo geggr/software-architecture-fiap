@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import br.com.fiap.totem_express.domain.product.Product;
+import br.com.fiap.totem_express.infrastructure.order.*;
+import br.com.fiap.totem_express.infrastructure.product.*;
+import br.com.fiap.totem_express.presentation.order.*;
 
 public class OrderItem {
     private Long id;
@@ -12,14 +15,15 @@ public class OrderItem {
     private Product product;
     private Long quantity;
     private BigDecimal price;
-    
-    
 
     public OrderItem(Order order, Product product, Long quantity, BigDecimal price) {
         this.order = order;
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice();
+    }
+
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, OrderEntity order, Long quantity, BigDecimal price) {
     }
 
     public Order getOrder() {
@@ -41,5 +45,12 @@ public class OrderItem {
         return id;
     }
 
-    
+
+    public String getProductName() {
+        return getProduct().getName();
+    }
+
+    public OrderItemView toView() {
+        return new OrderItemView(getProductName(), getQuantity(), getPrice());
+    }
 }

@@ -47,4 +47,8 @@ public class OrderItemEntity {
     public Long getId() {
         return id;
     }
+
+    public OrderItem toDomain() {
+        return new OrderItem(this.createdAt, this.product, this.order, this.quantity, this.price);
+    }
 }

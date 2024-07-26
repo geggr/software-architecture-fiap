@@ -39,9 +39,13 @@ public class OrderItemEntity {
         this.id = item.getId();
         this.createdAt = item.getCreatedAt();
         this.product = new ProductEntity(item.getProduct());
-        this.order = new OrderEntity(item.getOrder());
         this.quantity = item.getQuantity();
         this.price = item.getPrice();
+    }
+
+    public OrderItemEntity(OrderItem item, OrderEntity orderEntity) {
+        this(item);
+        order = orderEntity;
     }
 
     public Long getId() {

@@ -3,10 +3,10 @@ package br.com.fiap.totem_express.domain.order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
+import br.com.fiap.totem_express.application.order.output.OrderItemView;
 import br.com.fiap.totem_express.domain.product.Product;
 import br.com.fiap.totem_express.infrastructure.order.*;
 import br.com.fiap.totem_express.infrastructure.product.*;
-import br.com.fiap.totem_express.presentation.order.*;
 
 public class OrderItem {
     private Long id;
@@ -16,14 +16,19 @@ public class OrderItem {
     private Long quantity;
     private BigDecimal price;
 
-    public OrderItem(Order order, Product product, Long quantity, BigDecimal price) {
-        this.order = order;
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, OrderEntity order
+            , Long quantity, BigDecimal price) {
+        this.createdAt = createdAt;
+        this.product = product.toDomain();
+        this.order = order.toDomain();// TODO aqui está dando overflow porque se chamam
+        this.quantity = quantity;
+        this.price = price;//TODO esse aqui é preço unitário ou total?
+    }
+
+    public OrderItem(Product product, Long quantity) {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice();
-    }
-
-    public OrderItem(LocalDateTime createdAt, ProductEntity product, OrderEntity order, Long quantity, BigDecimal price) {
     }
 
     public Order getOrder() {
@@ -50,7 +55,8 @@ public class OrderItem {
         return getProduct().getName();
     }
 
-    public OrderItemView toView() {
-        return new OrderItemView(getProductName(), getQuantity(), getPrice());
+    public void setOrder(Order order) {
+        if(order == null) throw new IllegalArgumentException("Order must not be null");
+        this.order = order;
     }
 }

@@ -24,6 +24,12 @@ public class Order {
         this.total = items.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 
+    public Order(Set<OrderItem> orderItemsDomain, User user) {
+        this.user = user;
+        orderItemsDomain.forEach(oi -> oi.setOrder(this));
+        this.items = orderItemsDomain;
+    }
+
     public Long getId() {
         return id;
     }

@@ -19,4 +19,9 @@ public class OrderGatewayImpl implements OrderGateway {
         return orderRepository.findAll().stream().map(OrderEntity::toDomain).toList();
     }
 
+    @Override
+    public Order create(Order domain) {
+        return orderRepository.save(new OrderEntity(domain)).toDomain();
+    }
+
 }

@@ -38,11 +38,10 @@ public class OrderEntity {
     }
 
     public OrderEntity(Order order) {
-        this.id = order.getId();
         this.createdAt = order.getCreatedAt();
         this.updatedAt = order.getUpdatedAt();
         this.total = order.getTotal();
-        this.items = order.getItems().stream().map(item -> new OrderItemEntity(item)).collect(Collectors.toSet());
+        this.items = order.getItems().stream().map(item -> new OrderItemEntity(item, this)).collect(Collectors.toSet());
     }
 
     public void setId(Long id) {
@@ -54,11 +53,11 @@ public class OrderEntity {
     }
 
     //TODO colocar o usuário bonitinho quando implementarem a parte de usuários
-    public static Order toDomain(OrderEntity orderEntity) {
+    public Order toDomain() {
         return new Order(
-                orderEntity.createdAt,
-                orderEntity.updatedAt,
-                orderEntity.items.stream().map(OrderItemEntity::toDomain).collect(Collectors.toSet()),
+                createdAt,
+                updatedAt,
+                items.stream().map(OrderItemEntity::toDomain).collect(Collectors.toSet()),
                 new User("bla", "ble", "bli")
         );
     }

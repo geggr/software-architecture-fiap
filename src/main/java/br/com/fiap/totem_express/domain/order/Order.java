@@ -12,7 +12,7 @@ public class Order {
     private LocalDateTime createdAt = LocalDateTime.now();
     private LocalDateTime updatedAt = LocalDateTime.now();
     private Set<OrderItem> items = new HashSet<>();
-    private BigDecimal total;
+    private BigDecimal total = BigDecimal.ZERO;
     private User user;
     private Status status = Status.RECEIVED;
     
@@ -21,13 +21,20 @@ public class Order {
         this.updatedAt = updatedAt;
         this.items = items;
         this.user = user;
-        this.total = items.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.setTotal(items);
+    }
+
+    public Order(LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.user = user;
     }
 
     public Order(Set<OrderItem> orderItemsDomain, User user) {
         this.user = user;
         orderItemsDomain.forEach(oi -> oi.setOrder(this));
         this.items = orderItemsDomain;
+        this.setTotal(orderItemsDomain);
     }
 
     public Long getId() {
@@ -56,5 +63,14 @@ public class Order {
 
     public Status getStatus() {
         return status;
+    }
+
+    //TODO ao adicionar item, somar no total
+    public void addItem(OrderItem item) {
+        items.add(item);
+    }
+
+    protected void setTotal(Set<OrderItem> items) {
+        this.total = items.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

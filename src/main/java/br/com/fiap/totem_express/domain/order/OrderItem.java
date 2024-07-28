@@ -16,11 +16,11 @@ public class OrderItem {
     private Long quantity;
     private BigDecimal price;
 
-    public OrderItem(LocalDateTime createdAt, ProductEntity product, OrderEntity order
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, Order order
             , Long quantity, BigDecimal price) {
         this.createdAt = createdAt;
         this.product = product.toDomain();
-        this.order = order.toDomain();// TODO aqui está dando overflow porque se chamam
+        this.order = order;
         this.quantity = quantity;
         this.price = price;//TODO esse aqui é preço unitário ou total?
     }
@@ -29,6 +29,13 @@ public class OrderItem {
         this.product = product;
         this.quantity = quantity;
         this.price = product.getPrice();
+    }
+
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, Long quantity, BigDecimal price) {
+        this.createdAt = createdAt;
+        this.product = product.toDomain();
+        this.quantity = quantity;
+        this.price = price;
     }
 
     public Order getOrder() {

@@ -53,6 +53,10 @@ public class OrderItemEntity {
     }
 
     public OrderItem toDomain() {
-        return new OrderItem(this.createdAt, this.product, this.order, this.quantity, this.price);
+        Order orderDomain = this.order.toDomain();
+        OrderItem orderItem = new OrderItem(this.createdAt, this.product, this.quantity, this.price);
+        orderDomain.addItem(orderItem);
+        orderItem.setOrder(orderDomain);
+        return orderItem;
     }
 }

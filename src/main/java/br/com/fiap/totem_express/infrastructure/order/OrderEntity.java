@@ -15,7 +15,6 @@ public class OrderEntity {
     @Id
     @GeneratedValue
     private Long id;
-
     @NotNull
     private LocalDateTime createdAt = LocalDateTime.now();
     @NotNull
@@ -52,12 +51,16 @@ public class OrderEntity {
         return id;
     }
 
+    public Set<OrderItemEntity> getItems() {
+        return items;
+    }
+
     //TODO colocar o usuário bonitinho quando implementarem a parte de usuários
+    //pergunta: como fazer com que esse método adicione os itens sem recursão infinita?
     public Order toDomain() {
         return new Order(
                 createdAt,
                 updatedAt,
-                items.stream().map(OrderItemEntity::toDomain).collect(Collectors.toSet()),
                 new User("bla", "ble", "bli")
         );
     }

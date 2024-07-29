@@ -12,6 +12,8 @@ public interface ProductGateway {
 
     void delete(Long id);
 
+    Product update(Product product);
+
     Optional<Product> findById(Long id);
 
     List<Product> findAllByCategory(Category category);

@@ -23,14 +23,14 @@ public class UpdateProductUseCaseImpl implements UpdateProductUseCase {
 
         Product product = possibleProduct.get();
         product.update(input);
-        Product save = gateway.save(product);
+        Product updateProduct = gateway.update(product);
 
         return Optional.of(new ProductView.SimpleView(
-                save.getId(),
-                save.getName(),
-                save.getDescription(),
-                save.getImagePath(),
-                save.getPrice(),
-                save.getCategory()));
+                updateProduct.getId(),
+                updateProduct.getName(),
+                updateProduct.getDescription(),
+                updateProduct.getImagePath(),
+                updateProduct.getPrice(),
+                updateProduct.getCategory()));
     }
 }

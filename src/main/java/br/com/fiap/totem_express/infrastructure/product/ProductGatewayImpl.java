@@ -17,14 +17,7 @@ public class ProductGatewayImpl implements ProductGateway {
 
     @Override
     public Product save(Product product) {
-        Optional<ProductEntity> existingEntity = product.getId() == null
-                ? Optional.empty()
-                : repository.findById(product.getId());
-
-        final var savedEntity = existingEntity
-                .orElseGet(() -> repository.save(new ProductEntity(product)))
-                .updateFromDomain(product);
-
+        ProductEntity savedEntity = repository.save(new ProductEntity(product));
         return savedEntity.toDomain();
     }
 
@@ -35,6 +28,21 @@ public class ProductGatewayImpl implements ProductGateway {
             throw new IllegalArgumentException("Product with id: " + id + " not found");
         }
         repository.deleteById(id);
+    }
+
+    @Override
+    public Product update(Product product) {
+        Optional<ProductEntity> possibleProduct = repository.findById(product.getId());
+
+        if (possibleProduct.isEmpty()) {
+            throw new IllegalArgumentException("Product not found with id: " + product.getId());
+        }
+
+        ProductEntity productEntity = possibleProduct.get();
+        productEntity.updateFromDomain(product);
+        ProductEntity updatedEntity = repository.save(productEntity);
+
+        return updatedEntity.toDomain();
     }
 
     @Override

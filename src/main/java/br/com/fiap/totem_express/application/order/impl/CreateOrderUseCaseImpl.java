@@ -6,19 +6,22 @@ import br.com.fiap.totem_express.application.order.input.CreateOrderInput;
 import br.com.fiap.totem_express.application.order.input.OrderItemInput;
 import br.com.fiap.totem_express.application.order.output.OrderView;
 import br.com.fiap.totem_express.application.product.ProductGateway;
+import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.domain.order.OrderItem;
 import br.com.fiap.totem_express.domain.product.Product;
 
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
     private final OrderGateway orderGateway;
     private final ProductGateway productGateway;
+    private final UserGateway userGateway;
 
-    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway) {
+    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway, UserGateway userGateway) {
         this.orderGateway = orderGateway;
         this.productGateway = productGateway;
+        this.userGateway = userGateway;
     }
 
     @Override
@@ -35,9 +38,7 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
             );
         }).collect(Collectors.toSet());
 
-        //TODO precisa pegar o usuário de verdade
-        orderInput.getPossibleUser();
-        final var domain = orderInput.toDomain(orderItemsDomain);
+        final var domain = orderInput.toDomain(orderItemsDomain, userGateway);
         final var created = orderGateway.create(domain);
         return new OrderView(created);
     }

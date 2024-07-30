@@ -3,7 +3,7 @@ package br.com.fiap.totem_express.infrastructure.user;
 import br.com.fiap.totem_express.application.user.UserGateway;
 import br.com.fiap.totem_express.domain.user.User;
 
-import java.util.List;
+import java.util.*;
 
 public class UserGatewayImpl implements UserGateway {
     private final UserRepository repository;
@@ -26,5 +26,10 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     public boolean existsByEmailOrCPF(String email, String cpf) {
         return repository.existsByEmailOrCpf(email, cpf);
+    }
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return repository.findById(id).map(UserEntity::toDomain);
     }
 }

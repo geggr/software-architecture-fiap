@@ -3,9 +3,7 @@ package br.com.fiap.totem_express.domain.order;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import br.com.fiap.totem_express.application.order.output.OrderItemView;
 import br.com.fiap.totem_express.domain.product.Product;
-import br.com.fiap.totem_express.infrastructure.order.*;
 import br.com.fiap.totem_express.infrastructure.product.*;
 
 public class OrderItem {
@@ -14,28 +12,27 @@ public class OrderItem {
     private Order order;
     private Product product;
     private Long quantity;
-    private BigDecimal price;
+    private BigDecimal total;
 
-    public OrderItem(LocalDateTime createdAt, ProductEntity product, Order order
-            , Long quantity, BigDecimal price) {
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, Order order, Long quantity) {
         this.createdAt = createdAt;
         this.product = product.toDomain();
         this.order = order;
         this.quantity = quantity;
-        this.price = price;//TODO esse aqui é preço unitário ou total?
+        this.total = this.calculateTotal();
     }
 
     public OrderItem(Product product, Long quantity) {
         this.product = product;
         this.quantity = quantity;
-        this.price = product.getPrice();
+        this.total = this.calculateTotal();
     }
 
-    public OrderItem(LocalDateTime createdAt, ProductEntity product, Long quantity, BigDecimal price) {
+    public OrderItem(LocalDateTime createdAt, ProductEntity product, Long quantity, BigDecimal total) {
         this.createdAt = createdAt;
         this.product = product.toDomain();
         this.quantity = quantity;
-        this.price = price;
+        this.total = this.calculateTotal();
     }
 
     public Order getOrder() {
@@ -47,8 +44,8 @@ public class OrderItem {
     public Long getQuantity() {
         return quantity;
     }
-    public BigDecimal getPrice() {
-        return price;
+    public BigDecimal getTotal() {
+        return total;
     }
     public LocalDateTime getCreatedAt() {
         return createdAt;
@@ -56,8 +53,6 @@ public class OrderItem {
     public Long getId() {
         return id;
     }
-
-
     public String getProductName() {
         return getProduct().getName();
     }
@@ -65,5 +60,9 @@ public class OrderItem {
     public void setOrder(Order order) {
         if(order == null) throw new IllegalArgumentException("Order must not be null");
         this.order = order;
+    }
+
+    protected BigDecimal calculateTotal() {
+        return product.getPrice().multiply(BigDecimal.valueOf(quantity));
     }
 }

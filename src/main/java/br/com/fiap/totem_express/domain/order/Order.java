@@ -5,7 +5,6 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import br.com.fiap.totem_express.domain.user.User;
-import br.com.fiap.totem_express.presentation.order.*;
 
 public class Order {
     private Long id;
@@ -24,14 +23,14 @@ public class Order {
         this.setTotal(items);
     }
 
-    public Order(LocalDateTime createdAt, LocalDateTime updatedAt, User user) {
+    public Order(LocalDateTime createdAt, LocalDateTime updatedAt, Optional<User> user) {
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
-        this.user = user;
+        this.user = user.orElse(null);
     }
 
-    public Order(Set<OrderItem> orderItemsDomain, User user) {
-        this.user = user;
+    public Order(Set<OrderItem> orderItemsDomain, Optional<User> user) {
+        this.user = user.orElse(null);
         orderItemsDomain.forEach(oi -> oi.setOrder(this));
         this.items = orderItemsDomain;
         this.setTotal(orderItemsDomain);
@@ -57,8 +56,8 @@ public class Order {
         return total;
     }
 
-    public User getUser() {
-        return user;
+    public Optional<User> getPossibleUser() {
+        return Optional.ofNullable(user);
     }
 
     public Status getStatus() {
@@ -71,6 +70,6 @@ public class Order {
     }
 
     protected void setTotal(Set<OrderItem> items) {
-        this.total = items.stream().map(OrderItem::getPrice).reduce(BigDecimal.ZERO, BigDecimal::add);
+        this.total = items.stream().map(OrderItem::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
     }
 }

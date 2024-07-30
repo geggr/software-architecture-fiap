@@ -1,5 +1,6 @@
 package br.com.fiap.totem_express.application.order.input;
 
+import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.domain.order.Order;
 import br.com.fiap.totem_express.domain.order.OrderItem;
 
@@ -10,7 +11,7 @@ public interface CreateOrderInput {
 
     Set<OrderItemInput> orderItems();
 
-    Optional<Object> getPossibleUser();
+    Optional<Long> possibleUserId();
 
-    Order toDomain(Set<OrderItem> orderItemsDomain);
+    Order toDomain(Set<OrderItem> orderItemsDomain, UserGateway userGateway);
 }

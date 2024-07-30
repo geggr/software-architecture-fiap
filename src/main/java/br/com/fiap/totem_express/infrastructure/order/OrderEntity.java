@@ -22,7 +22,7 @@ public class OrderEntity {
     @NotNull
     private LocalDateTime updatedAt = LocalDateTime.now();
     @NotEmpty
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Set<OrderItemEntity> items = new HashSet<>();
     @NotNull

@@ -2,6 +2,8 @@ package br.com.fiap.totem_express.infrastructure.order;
 
 import br.com.fiap.totem_express.domain.order.*;
 import br.com.fiap.totem_express.domain.user.*;
+import br.com.fiap.totem_express.infrastructure.user.*;
+import jakarta.annotation.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 
@@ -20,15 +22,14 @@ public class OrderEntity {
     @NotNull
     private LocalDateTime updatedAt = LocalDateTime.now();
     @NotEmpty
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Set<OrderItemEntity> items = new HashSet<>();
     @NotNull
     private BigDecimal total;
-
-    //TODO substituir pela entidade do User quando estiver feita
-    private Long user_id;
-
+    @ManyToOne
+    @Nullable
+    private UserEntity user;
     @Enumerated(EnumType.STRING)
     private Status status = Status.RECEIVED;
 
@@ -40,6 +41,7 @@ public class OrderEntity {
         this.createdAt = order.getCreatedAt();
         this.updatedAt = order.getUpdatedAt();
         this.total = order.getTotal();
+        this.user = order.getPossibleUser().map(UserEntity::new).orElse(null);
         this.items = order.getItems().stream().map(item -> new OrderItemEntity(item, this)).collect(Collectors.toSet());
     }
 
@@ -55,13 +57,11 @@ public class OrderEntity {
         return items;
     }
 
-    //TODO colocar o usuário bonitinho quando implementarem a parte de usuários
-    //pergunta: como fazer com que esse método adicione os itens sem recursão infinita?
     public Order toDomain() {
         return new Order(
                 createdAt,
                 updatedAt,
-                new User("bla", "ble", "bli")
+                Optional.ofNullable(user).map(UserEntity::toDomain)
         );
     }
 }

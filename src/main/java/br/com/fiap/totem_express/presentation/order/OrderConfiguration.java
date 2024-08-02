@@ -6,6 +6,7 @@ import br.com.fiap.totem_express.application.order.OrderGateway;
 import br.com.fiap.totem_express.application.order.impl.CreateOrderUseCaseImpl;
 import br.com.fiap.totem_express.application.order.impl.ListOrderUseCaseImpl;
 import br.com.fiap.totem_express.application.product.ProductGateway;
+import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.infrastructure.order.OrderGatewayImpl;
 import br.com.fiap.totem_express.infrastructure.order.OrderRepository;
 import org.springframework.context.annotation.Bean;
@@ -30,7 +31,7 @@ public class OrderConfiguration {
     }
 
     @Bean
-    public CreateOrderUseCase createOrderUseCase(ProductGateway productGateway) {
-        return new CreateOrderUseCaseImpl(orderGateway(), productGateway);
+    public CreateOrderUseCase createOrderUseCase(ProductGateway productGateway, UserGateway userGateway) {
+        return new CreateOrderUseCaseImpl(orderGateway(), productGateway, userGateway);
     }
 }

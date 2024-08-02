@@ -6,6 +6,6 @@ import java.math.*;
 
 public record OrderItemView(String name, Long quantity, BigDecimal price) {
     public OrderItemView(OrderItem item) {
-        this(item.getProductName(), item.getQuantity(), item.getPrice());
+        this(item.getProductName(), item.getQuantity(), item.getTotal());
     }
 }

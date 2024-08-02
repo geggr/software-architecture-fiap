@@ -1,7 +1,6 @@
 package br.com.fiap.totem_express.infrastructure.order;
 
 import br.com.fiap.totem_express.domain.order.*;
-import br.com.fiap.totem_express.domain.product.*;
 import br.com.fiap.totem_express.infrastructure.product.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -40,7 +39,7 @@ public class OrderItemEntity {
         this.createdAt = item.getCreatedAt();
         this.product = new ProductEntity(item.getProduct());
         this.quantity = item.getQuantity();
-        this.price = item.getPrice();
+        this.price = item.getTotal();
     }
 
     public OrderItemEntity(OrderItem item, OrderEntity orderEntity) {

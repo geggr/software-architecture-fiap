@@ -1,7 +1,6 @@
 package br.com.fiap.totem_express.infrastructure.order;
 
 import br.com.fiap.totem_express.domain.order.*;
-import br.com.fiap.totem_express.domain.product.*;
 import br.com.fiap.totem_express.infrastructure.product.*;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
@@ -39,9 +38,13 @@ public class OrderItemEntity {
         this.id = item.getId();
         this.createdAt = item.getCreatedAt();
         this.product = new ProductEntity(item.getProduct());
-        this.order = new OrderEntity(item.getOrder());
         this.quantity = item.getQuantity();
-        this.price = item.getPrice();
+        this.price = item.getTotal();
+    }
+
+    public OrderItemEntity(OrderItem item, OrderEntity orderEntity) {
+        this(item);
+        order = orderEntity;
     }
 
     public Long getId() {
@@ -49,6 +52,10 @@ public class OrderItemEntity {
     }
 
     public OrderItem toDomain() {
-        return new OrderItem(this.createdAt, this.product, this.order, this.quantity, this.price);
+        Order orderDomain = this.order.toDomain();
+        OrderItem orderItem = new OrderItem(this.createdAt, this.product, this.quantity, this.price);
+        orderDomain.addItem(orderItem);
+        orderItem.setOrder(orderDomain);
+        return orderItem;
     }
 }

@@ -24,6 +24,11 @@ public class UserGatewayImpl implements UserGateway {
     }
 
     @Override
+    public boolean existsById(Long id) {
+        return repository.existsById(id);
+    }
+
+    @Override
     public boolean existsByEmailOrCPF(String email, String cpf) {
         return repository.existsByEmailOrCpf(email, cpf);
     }
@@ -31,5 +36,10 @@ public class UserGatewayImpl implements UserGateway {
     @Override
     public Optional<User> findById(Long id) {
         return repository.findById(id).map(UserEntity::toDomain);
+    }
+
+    @Override
+    public Optional<User> findByCPF(String cpf) {
+        return repository.findByCpf(cpf).map(UserEntity::toDomain);
     }
 }

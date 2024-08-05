@@ -50,8 +50,6 @@ public class Product {
         this(name, description, imagePath, price, category);
 
         Invariant.of(id, notNull("Product id must be not null"));
-        Invariant.of(createdAt, notNull("Product created at must be not null"));
-        Invariant.of(updatedAt, notNull("Product updated at must be not null"));
 
         this.id = id;
         this.createdAt = createdAt;

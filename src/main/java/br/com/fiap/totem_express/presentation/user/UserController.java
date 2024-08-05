@@ -24,7 +24,7 @@ public class UserController implements UserDocumentation {
     }
 
     @InitBinder("createUserRequest")
-    public void init(WebDataBinder it){
+    public void init (WebDataBinder it){
         it.addValidators(uniqueUserValidator);
     }
 
@@ -36,8 +36,10 @@ public class UserController implements UserDocumentation {
     }
 
     @GetMapping
-    public ResponseEntity find(){
-        final var items = retrieveUserUseCase.execute();
-        return ResponseEntity.ok(items);
+    public ResponseEntity find(@RequestParam("document") String document){
+        return retrieveUserUseCase
+                .execute(document)
+                .map(ResponseEntity::ok)
+                .orElseGet(() -> ResponseEntity.notFound().build());
     }
 }

@@ -33,5 +33,5 @@ public interface UserDocumentation {
     @ApiResponses({
             @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DefaultUserView.class), mediaType = "application/json"))
     })
-    ResponseEntity<?> find();
+    ResponseEntity<?> find(String document);
 }

@@ -1,7 +1,8 @@
-package br.com.fiap.totem_express.application.order;
+package br.com.fiap.totem_express.application.order.impl;
 
-import br.com.fiap.totem_express.domain.order.Order;
-import br.com.fiap.totem_express.presentation.order.OrderView;
+import br.com.fiap.totem_express.application.order.ListOrderUseCase;
+import br.com.fiap.totem_express.application.order.OrderGateway;
+import br.com.fiap.totem_express.application.order.output.OrderView;
 import org.springframework.stereotype.Component;
 
 import java.util.List;

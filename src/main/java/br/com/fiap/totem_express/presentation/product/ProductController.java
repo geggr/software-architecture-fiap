@@ -51,7 +51,7 @@ public class ProductController implements ProductDocumentation {
 
     @Override
     @Transactional
-    @PutMapping("/api/product/")
+    @PutMapping("/api/product")
     public ResponseEntity<ProductView> update(@RequestBody @Valid UpdateProductRequest request) {
         Optional<ProductView> possibleUpdateProduct = updateUseCase.update(request);
         if (possibleUpdateProduct.isEmpty()) return ResponseEntity.notFound().build();
@@ -63,7 +63,7 @@ public class ProductController implements ProductDocumentation {
     @Override
     @Transactional
     @GetMapping("/api/product/{categoryName}")
-    public ResponseEntity<List<ProductView>> find(@PathVariable String categoryName) {
+    public ResponseEntity<List<ProductView>> findBy(@PathVariable String categoryName) {
         Optional<Category> possibleCategory = Category.findByName(categoryName);
         if (possibleCategory.isEmpty()) return ResponseEntity.notFound().build();
 

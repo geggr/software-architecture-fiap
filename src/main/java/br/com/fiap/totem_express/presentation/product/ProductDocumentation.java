@@ -4,23 +4,50 @@ import java.util.List;
 
 import br.com.fiap.totem_express.application.product.output.ProductView;
 import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.*;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
 import br.com.fiap.totem_express.presentation.product.request.CreateProductRequest;
 import br.com.fiap.totem_express.presentation.product.request.UpdateProductRequest;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
+@Tag(name = "Produto", description = "API de produtos")
 public interface ProductDocumentation {
 
-    @Operation(summary = "Create a new product", description = "Creates a new product with the given details")
-    ResponseEntity<ProductView> create(CreateProductRequest request);
+    @Operation(summary = "Cria novo produto", description = "Cria um novo produto e retorna as informações fornecidas")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos", content = @Content(schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+    })
+    ResponseEntity<ProductView> create(@RequestBody @Valid CreateProductRequest request);
 
-    @Operation(summary = "Delete a product", description = "Deletes the product with the given ID")
-    ResponseEntity<Void> delete(Long id);
+    @Operation(summary = "Exclui Produto ", description = "Exclui o produto com o ID fornecido")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "404", description = "ID fornecido não existe", content = {@Content(schema = @Schema(implementation = Void.class))})
+    })
+    ResponseEntity<Void> delete(@PathVariable Long id);
 
-    @Operation(summary = "Update a product", description = "Updates the product with the given details")
-    ResponseEntity<ProductView> update(UpdateProductRequest request);
+    @Operation(summary = "Atualiza produto", description = "Atualiza o produto com os detalhes fornecidos")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos", content = @Content(schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+    })
+    ResponseEntity<ProductView> update(@RequestBody @Valid UpdateProductRequest request);
 
-    @Operation(summary = "Find products by category", description = "Returns all products according to category")
-    ResponseEntity<List<ProductView>> find(String category);
+    @Operation(summary = "Traz produtos por categoria", description = "Retorna todos os produtos de acordo com a categoria fornecida")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Produto sem categoria cadastrada", content = @Content(schema = @Schema(implementation = Void.class))),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+    })
+    ResponseEntity<List<ProductView>> findBy(@PathVariable String category);
 }
 

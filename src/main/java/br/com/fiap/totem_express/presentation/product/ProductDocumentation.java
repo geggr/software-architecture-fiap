@@ -7,6 +7,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.*;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 
@@ -15,6 +16,7 @@ import br.com.fiap.totem_express.presentation.product.request.UpdateProductReque
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 
+@Tag(name = "Produto", description = "API de produtos")
 public interface ProductDocumentation {
 
     @Operation(summary = "Cria novo produto", description = "Cria um novo produto e retorna as informações fornecidas")

@@ -47,7 +47,7 @@ docker compose up
 
 | Endpoint                  | Método HTTP | Parâmetros                 | Descrição                     |
 |---------------------------|-------------|----------------------------|-------------------------------|
-| `/api/users/`             | `POST`      |                            | Cria um usuário comum no sistema         
+| `/api/users/`             | `POST`      |                            | Cria um usuário (cliente) comum no sistema         
 | `/api/users?document=?`   | `GET`       | Documento (CPF) do usuário | Retorna o usuário cadastrado com aquele CPF 
 | `/api/product/`           | `POST`      |                            | Cria um produto no sistema               
 | `/api/product/`           | `PUT`       |                            | Atualiza um produto no sistema
@@ -56,4 +56,21 @@ docker compose up
 | `/api/order/create`       | `POST`      |                            | Cria um pedido no sistema
 | `/api/order/list`         | `GET`       |                            | Lista pedidos cadastrados no sistema
 
+
+### Populando o Banco de Dados
+
+Dentro do projeto, temos um arquivo para criar uma base de dados para testar os endpoints, o arquivo `seed/seed.js` pode ser executado utilizando um interpretador javascript como o [Node.JS](https://nodejs.org/en/download/package-manager), para isso basta, dentro do projeto executar:
+
+```shell
+node seeds/seed.js
+```
+
+Esse script irá criar:
+
+- 2 lanches
+- 2 acompanhamentos
+- 2 sobremesas
+- 2 bebidas
+- 1 cliente do restaurante
+- 5 pedidos
 

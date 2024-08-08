@@ -24,6 +24,32 @@
         return response.json()
     }
 
+    async function put(url, params) {
+        const response = await fetch(url, {
+            method: 'PUT',
+            headers: {
+                'content-type': 'application/json'
+            },
+            body: JSON.stringify(params)
+        })
+
+        return response.json()
+    }
+
+    async function update_product({ product, next_price }) {
+        const endpoint = BASE_URI.concat("/product/")
+
+        console.log({
+            ...product,
+            price: next_price
+        })
+
+        await put(endpoint, {
+            ...product,
+            price: next_price
+        })
+    }
+
     async function create_order({ user, items }) {
         const endpoint = BASE_URI.concat("/order/create")
 
@@ -182,14 +208,26 @@
         )
     }
 
+    const drinks = await get_products_by_category({ category: "DRINK" })
 
-    await create_many_orders({ size: 5 })
+    console.log(drinks)
 
-    const orders = await get_orders()
+    const drink = drinks.at(0)
 
-    for (const order of orders) {
-        print_order(order)
-        console.log("-------------------------------")
-    }
+    await update_product({
+        product: drink,
+        next_price: 8.50
+    })
+
+    console.log(
+        await get_products_by_category({ category: "DRINK" })
+    )
+
+    // const orders = await get_orders()
+
+    // for (const order of orders) {
+    //     print_order(order)
+    //     console.log("-------------------------------")
+    // }
 
 })()

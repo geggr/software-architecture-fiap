@@ -18,7 +18,16 @@ public class Order {
     private BigDecimal total = BigDecimal.ZERO;
     private User user;
     private Status status = Status.RECEIVED;
-    
+
+    public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal total, User user, Status status) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.total = total;
+        this.user = user;
+        this.status = status;
+    }
+
     public Order(LocalDateTime createdAt, LocalDateTime updatedAt, Set<OrderItem> items, User user) {
         Invariant.of(createdAt, notNull("Order created at must be not null"));
         Invariant.of(updatedAt, notNull("Order updated at must be not null"));

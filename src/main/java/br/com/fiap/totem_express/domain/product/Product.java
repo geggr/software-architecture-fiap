@@ -4,6 +4,9 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
 import br.com.fiap.totem_express.application.product.input.UpdateProductInput;
+import br.com.fiap.totem_express.shared.invariant.Invariant;
+
+import static br.com.fiap.totem_express.shared.invariant.Rule.*;
 
 
 public class Product {
@@ -18,7 +21,12 @@ public class Product {
     private LocalDateTime updatedAt;
 
     public Product(String name, String description, String imagePath, BigDecimal price, Category category) {
-        validateFields(name, description, imagePath, price, category);
+        Invariant.of(name, notBlank("Product name must be not blank"));
+        Invariant.of(description, notBlank("Product description must be not blank"));
+        Invariant.of(imagePath, notBlank("Product image path must be not blank"));
+        Invariant.of(price, gt(BigDecimal.ZERO, "Product price must be greater than 0"));
+        Invariant.of(category, notNull("Product category must be not blank"));
+
         this.name = name;
         this.description = description;
         this.imagePath = imagePath;
@@ -30,14 +38,19 @@ public class Product {
         this(name, description, imagePath, price, category);
         this.id = id;
     }
+
     public Product(Long id, String name, String description, String imagePath, BigDecimal price, Category category, LocalDateTime updatedAt) {
         this(name, description, imagePath, price, category);
         this.id = id;
         this.updatedAt = updatedAt;
     }
 
+
     public Product(Long id, String name, String description, String imagePath, BigDecimal price, Category category, LocalDateTime createdAt, LocalDateTime updatedAt) {
         this(name, description, imagePath, price, category);
+
+        Invariant.of(id, notNull("Product id must be not null"));
+
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
@@ -76,17 +89,4 @@ public class Product {
         this.category = input.category();
         this.updatedAt = LocalDateTime.now();
     }
-
-    private void validateFields(String name, String description, String imagePath, BigDecimal price, Category category) {
-        if (name == null || name.isBlank())
-            throw new IllegalArgumentException("Name cannot be null or blank");
-        if (description == null || description.isBlank())
-            throw new IllegalArgumentException("Description cannot be null or blank");
-        if (imagePath == null || imagePath.isBlank())
-            throw new IllegalArgumentException("ImagePath cannot be null or blank");
-        if (price == null || price.compareTo(BigDecimal.ZERO) <= 0)
-            throw new IllegalArgumentException("Price must be positive");
-        if (category == null) throw new IllegalArgumentException("Category cannot be null");
-    }
-
 }

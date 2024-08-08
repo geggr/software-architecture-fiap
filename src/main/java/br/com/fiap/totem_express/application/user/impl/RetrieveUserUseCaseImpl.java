@@ -5,6 +5,7 @@ import br.com.fiap.totem_express.application.user.UserGateway;
 import br.com.fiap.totem_express.application.user.output.DefaultUserView;
 
 import java.util.List;
+import java.util.Optional;
 
 public class RetrieveUserUseCaseImpl implements RetrieveUserUseCase {
 
@@ -15,11 +16,9 @@ public class RetrieveUserUseCaseImpl implements RetrieveUserUseCase {
     }
 
     @Override
-    public List<DefaultUserView> execute() {
+    public Optional<DefaultUserView> execute(String cpf) {
         return gateway
-                .findAll()
-                .stream()
-                .map(it -> new DefaultUserView(it.getId(), it.getName()))
-                .toList();
+                .findByCPF(cpf)
+                .map(user -> new DefaultUserView(user.getId(), user.getName()));
     }
 }

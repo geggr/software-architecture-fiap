@@ -21,32 +21,32 @@ public interface ProductDocumentation {
 
     @Operation(summary = "Cria novo produto", description = "Cria um novo produto e retorna as informações fornecidas")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
-            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos", content = @Content(schema = @Schema(implementation = Void.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+            @ApiResponse(responseCode = "200", content = {@Content(schema=@Schema(implementation = ProductView.SimpleView.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema")
     })
     ResponseEntity<ProductView> create(@RequestBody @Valid CreateProductRequest request);
 
     @Operation(summary = "Exclui Produto ", description = "Exclui o produto com o ID fornecido")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
-            @ApiResponse(responseCode = "404", description = "ID fornecido não existe", content = {@Content(schema = @Schema(implementation = Void.class))})
+            @ApiResponse(responseCode = "200", description = "O produto foi removido com sucesso" ),
+            @ApiResponse(responseCode = "404", description = "ID fornecido não existe" )
     })
     ResponseEntity<Void> delete(@PathVariable Long id);
 
     @Operation(summary = "Atualiza produto", description = "Atualiza o produto com os detalhes fornecidos")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
-            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos", content = @Content(schema = @Schema(implementation = Void.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+            @ApiResponse(responseCode = "200", content = {@Content(schema=@Schema(implementation = ProductView.SimpleView.class), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "400", description = "Dados fornecidos estão incorretos"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema")
     })
     ResponseEntity<ProductView> update(@RequestBody @Valid UpdateProductRequest request);
 
     @Operation(summary = "Traz produtos por categoria", description = "Retorna todos os produtos de acordo com a categoria fornecida")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.class)), mediaType = "application/json")}),
-            @ApiResponse(responseCode = "204", description = "Produto sem categoria cadastrada", content = @Content(schema = @Schema(implementation = Void.class))),
-            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+            @ApiResponse(responseCode = "200", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = ProductView.SimpleView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "204", description = "Produto sem categoria cadastrada"),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema")
     })
     ResponseEntity<List<ProductView>> findBy(@PathVariable String category);
 }

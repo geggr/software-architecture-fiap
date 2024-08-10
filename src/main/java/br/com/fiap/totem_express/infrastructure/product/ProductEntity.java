@@ -11,7 +11,7 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
 import org.hibernate.annotations.SoftDelete;
 
-@SoftDelete
+
 @Entity(name = "product")
 public class ProductEntity {
     @Id
@@ -37,6 +37,10 @@ public class ProductEntity {
 
     @Column(name = "created_at")
     private LocalDateTime createdAt = LocalDateTime.now();
+
+    @SoftDelete
+    @Column(name = "deleted")
+    private Boolean deleted = false;
 
     @Column(name = "updated_at")
     private LocalDateTime updatedAt;

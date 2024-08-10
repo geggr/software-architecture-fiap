@@ -46,6 +46,11 @@ public class ProductGatewayImpl implements ProductGateway {
     }
 
     @Override
+    public List<Product> findAllByIds(Set<Long> order) {
+        return repository.findAllById(order).stream().map(ProductEntity::toDomain).toList();
+    }
+
+    @Override
     public Optional<Product> findById(Long id) {
         return repository.findById(id).map(ProductEntity::toDomain);
     }

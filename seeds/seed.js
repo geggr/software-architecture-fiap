@@ -207,27 +207,10 @@
             Array.from({ length: size }, () => create_random_order({ cpf: null }))
         )
     }
+     const orders = await get_orders()
 
-    const drinks = await get_products_by_category({ category: "DRINK" })
-
-    console.log(drinks)
-
-    const drink = drinks.at(0)
-
-    await update_product({
-        product: drink,
-        next_price: 8.50
-    })
-
-    console.log(
-        await get_products_by_category({ category: "DRINK" })
-    )
-
-    // const orders = await get_orders()
-
-    // for (const order of orders) {
-    //     print_order(order)
-    //     console.log("-------------------------------")
-    // }
-
+     for (const order of orders) {
+         print_order(order)
+         console.log("-------------------------------")
+     }
 })()

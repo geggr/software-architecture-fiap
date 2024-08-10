@@ -1,6 +1,5 @@
 package br.com.fiap.totem_express.presentation.user;
 
-import br.com.fiap.totem_express.application.user.input.NewUserInput;
 import br.com.fiap.totem_express.application.user.output.DefaultUserView;
 import br.com.fiap.totem_express.presentation.errors.BadRequestError;
 import br.com.fiap.totem_express.presentation.user.requests.CreateUserRequest;
@@ -14,24 +13,28 @@ import org.springframework.http.ResponseEntity;
 
 @Tag(name = "Usuarios", description = "API de Usuários")
 public interface UserDocumentation {
-    @Operation(summary = "Cria novo usuário", description = "Retorna o novo usuário cadastrado")
+    @Operation(summary = "Criar Usuário", description = "Cadastra um novo usuário (comum) no sistema.")
     @ApiResponses({
             @ApiResponse(
                     responseCode = "200",
-                    description = "Sucesso ao cadastrar o usuário",
+                    description = "Retorna o identificador do usuário e o nome",
                     content = { @Content(schema = @Schema(implementation = DefaultUserView.class),mediaType = "application/json")
             }),
             @ApiResponse(
                     responseCode = "400",
-                    description = "Quando há erro de validação",
+                    description = "Retorna os erros de validação ao criar o usuário",
                     content = {@Content(schema = @Schema(implementation = BadRequestError.class))}
             )
     })
     ResponseEntity<?> create(CreateUserRequest request);
 
-    @Operation(summary = "Lista usuários",description = "Retorna os usuários cadastrados no resturante")
+    @Operation(summary = "Listar Usuário", description = "Retorna o usuário cadastrado no sistema pelo CPF")
     @ApiResponses({
-            @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DefaultUserView.class), mediaType = "application/json"))
+            @ApiResponse(responseCode = "200", content = @Content(schema = @Schema(implementation = DefaultUserView.class), mediaType = "application/json")),
+            @ApiResponse(
+                    responseCode = "400",
+                    description = "Quando não há usuário cadastrado no sistema para aquele CPF"
+            )
     })
     ResponseEntity<?> find(String document);
 }

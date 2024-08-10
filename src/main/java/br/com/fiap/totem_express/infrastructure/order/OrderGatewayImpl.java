@@ -16,7 +16,7 @@ public class OrderGatewayImpl implements OrderGateway {
 
     @Override
     public List<Order> findAll() {
-        return orderRepository.findAll().stream().map(orderEntity -> {
+        return orderRepository.findAllWithDeleteProducts().stream().map(orderEntity -> {
             Order orderDomain = orderEntity.toDomain();
             orderEntity.getItems().forEach(itemEntity -> {
                orderDomain.addItem(itemEntity.toDomain());

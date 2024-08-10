@@ -5,6 +5,11 @@
 Este é o nosso projeto para a pós graduação em **Software Architecture da FIAP**.
 O "Totem Express" tem como objetivo ser um sistema de gestão interna de restaurante, sendo o ponto de conexão entre os clientes e a cozinha.
 
+### Event Storming & Documentação do Sistema
+
+O Event Storm e a documentação dos eventos pivotais pode ser encontrado [no seguinte Miro](https://miro.com/app/board/uXjVK3rqGz4=/?share_link_id=859281805316
+)
+
 #### Tecnologias
 
 ![java](https://img.shields.io/badge/Java_22-000?style=for-the-badge&logo=oracle&logoColor=white)
@@ -18,6 +23,33 @@ Para desenvolver o projeto utilizamos as seguintes técnologias:
 - **Spring Boot 3** como framework web.
 - **MySQL 8.4** como banco de dados relacional
 - **Docker** como gerenciador de containers.
+
+### Arquitetura
+
+O projeto precisava ser desenvolvido seguindo príncipios da **Arquitetura Hexagonal**, para isso separamos nossa aplicação nos seguintes módulos:
+
+1) `Application`
+
+Neste módulo teremos as definições de contratos a cerca das regras de négocio da aplicação, isto é, quais serão os inputs, outputs e componentes necessários para processar os dados.
+
+2) `Domain`
+
+Neste pacote temos a definição das entidades de domínio da nossa aplicação.
+
+3) `Infrastructure`
+
+Neste pacote temos os arquivos de infraestrutura da nossa aplicação, como por exemplo, configuração do banco de dados com o `Spring Data JPA` e a definição das entidades do banco.
+
+4) `Presentation`
+
+A camada de apresentação, neste caso, é uma aplicação web `REST`, ou seja, neste pacote teremos as configurações do nosso servidor http.
+
+
+5) `Shared`
+
+Este pacote tem como objetivo exportar classes de utilidade (ex: validação e formatação de dados), que podem ser utilizadas por outros módulos, esses arquivos são puros e não dependem de biblioteca.
+
+---
 
 ### Como utilizar?
 
@@ -45,16 +77,16 @@ docker compose up
 
 ### Rotas da Aplicação 
 
-| Endpoint                  | Método HTTP | Parâmetros                 | Descrição                     |
-|---------------------------|-------------|----------------------------|-------------------------------|
-| `/api/users/`             | `POST`      |                            | Cria um usuário (cliente) comum no sistema         
-| `/api/users?document=?`   | `GET`       | Documento (CPF) do usuário | Retorna o usuário cadastrado com aquele CPF 
-| `/api/product/`           | `POST`      |                            | Cria um produto no sistema               
-| `/api/product/`           | `PUT`       |                            | Atualiza um produto no sistema
-| `/api/product/`           | `DELETE`    |                            | Remove um produto do sistema            
-| `/api/product/{category}` | `GET`       | Categoria                  | Lista produtos de determinada categoria no sistema
-| `/api/order/create`       | `POST`      |                            | Cria um pedido no sistema
-| `/api/order/list`         | `GET`       |                            | Lista pedidos cadastrados no sistema
+| Endpoint                 | Método HTTP | Parâmetros  de Busca          | Descrição                     |
+|--------------------------|-------------|-------------------------------|-------------------------------|
+| `/api/users`             | `POST`      |                               | Cria um usuário (cliente) comum no sistema         
+| `/api/users?document`    | `GET`       | Documento (CPF) do usuário    | Retorna o usuário cadastrado no sistema com aquele CPF. 
+| `/api/product`           | `POST`      |                               | Cadastra um produto no Totem.
+| `/api/product`           | `PUT`       |                               | Atualiza informações do produto no Totem.
+| `/api/product`           | `DELETE`    |                               | Remove um produto do Totem.            
+| `/api/product/{category}`| `GET`       | Categoria do Produto Desejado | Retorna os produtos cadastrados no Totem para determinada categoria.
+| `/api/order/create`      | `POST`      |                               | Cadastra um pedido no sistema.
+| `/api/order/list`        | `GET`       |                               | Retorna os pedidos cadastrados no sistema.
 
 
 ### Populando o Banco de Dados

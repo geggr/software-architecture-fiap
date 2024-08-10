@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 import br.com.fiap.totem_express.domain.product.Category;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
@@ -17,6 +18,7 @@ public interface ProductRepository extends JpaRepository<ProductEntity, Long> {
     List<ProductEntity> findAll();
 
     @Transactional
-    @Query("UPDATE product p SET p.deleted = true")
-    void delete(Long id);
+    @Modifying
+    @Query("UPDATE product p SET p.deleted = true WHERE p.id = :id")
+    void deleteById(@Param("id") Long id);
 }

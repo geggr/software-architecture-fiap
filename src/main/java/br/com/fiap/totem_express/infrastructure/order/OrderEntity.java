@@ -12,24 +12,30 @@ import java.time.*;
 import java.util.*;
 import java.util.stream.*;
 
-@Entity
+@Entity(name = "orders")
 public class OrderEntity {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+
     @NotNull
     private LocalDateTime createdAt = LocalDateTime.now();
+
     @NotNull
     private LocalDateTime updatedAt = LocalDateTime.now();
+
     @NotEmpty
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "order_id")
+    @OneToMany(mappedBy = "order", cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     private Set<OrderItemEntity> items = new HashSet<>();
+
     @NotNull
     private BigDecimal total;
+
     @ManyToOne
     @Nullable
     private UserEntity user;
+
     @Enumerated(EnumType.STRING)
     private Status status = Status.RECEIVED;
 
@@ -59,9 +65,12 @@ public class OrderEntity {
 
     public Order toDomain() {
         return new Order(
+                id,
                 createdAt,
                 updatedAt,
-                Optional.ofNullable(user).map(UserEntity::toDomain)
+                total,
+                Optional.ofNullable(user).map(UserEntity::toDomain).orElse(null),
+                status
         );
     }
 }

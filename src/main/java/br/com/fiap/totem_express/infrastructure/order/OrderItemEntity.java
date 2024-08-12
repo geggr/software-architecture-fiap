@@ -8,7 +8,7 @@ import jakarta.validation.constraints.*;
 import java.math.*;
 import java.time.*;
 
-@Entity
+@Entity(name = "order_item")
 public class OrderItemEntity {
 
     @Id
@@ -19,6 +19,7 @@ public class OrderItemEntity {
     private LocalDateTime createdAt =  LocalDateTime.now();
 
     @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "order_id")
     private OrderEntity order;
 
     @ManyToOne

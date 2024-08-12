@@ -5,6 +5,10 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 import br.com.fiap.totem_express.domain.user.User;
+import br.com.fiap.totem_express.shared.invariant.Invariant;
+
+import static br.com.fiap.totem_express.shared.invariant.Rule.notEmpty;
+import static br.com.fiap.totem_express.shared.invariant.Rule.notNull;
 
 public class Order {
     private Long id;
@@ -14,8 +18,21 @@ public class Order {
     private BigDecimal total = BigDecimal.ZERO;
     private User user;
     private Status status = Status.RECEIVED;
-    
+
+    public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal total, User user, Status status) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+        this.total = total;
+        this.user = user;
+        this.status = status;
+    }
+
     public Order(LocalDateTime createdAt, LocalDateTime updatedAt, Set<OrderItem> items, User user) {
+        Invariant.of(createdAt, notNull("Order created at must be not null"));
+        Invariant.of(updatedAt, notNull("Order updated at must be not null"));
+        Invariant.of(items, notEmpty("Order item must be be not empty"));
+
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.items = items;

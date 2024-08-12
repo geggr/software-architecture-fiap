@@ -2,8 +2,8 @@ package br.com.fiap.totem_express.application.user;
 
 import br.com.fiap.totem_express.application.user.output.DefaultUserView;
 
-import java.util.List;
+import java.util.Optional;
 
 public interface RetrieveUserUseCase {
-    List<DefaultUserView> execute();
+    Optional<DefaultUserView> execute(String cpf);
 }

@@ -2,6 +2,7 @@ package br.com.fiap.totem_express.infrastructure.product;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.domain.product.Category;
@@ -20,7 +21,6 @@ public class ProductGatewayImpl implements ProductGateway {
         ProductEntity savedEntity = repository.save(new ProductEntity(product));
         return savedEntity.toDomain();
     }
-
 
     @Override
     public void delete(Long id) {
@@ -43,6 +43,11 @@ public class ProductGatewayImpl implements ProductGateway {
         ProductEntity updatedEntity = repository.save(productEntity);
 
         return updatedEntity.toDomain();
+    }
+
+    @Override
+    public List<Product> findAllByIds(Set<Long> order) {
+        return repository.findAllById(order).stream().map(ProductEntity::toDomain).toList();
     }
 
     @Override

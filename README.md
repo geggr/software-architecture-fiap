@@ -7,8 +7,7 @@ O "Totem Express" tem como objetivo ser um sistema de gestão interna de restaur
 
 ### Event Storming & Documentação do Sistema
 
-O Event Storm e a documentação dos eventos pivotais pode ser encontrado [no seguinte Miro](https://miro.com/app/board/uXjVK3rqGz4=/?share_link_id=859281805316
-)
+O Event Storm e a documentação dos eventos pivotais pode ser encontrado [no seguinte Miro](https://miro.com/app/board/uXjVK3rqGz4=/?share_link_id=859281805316)
 
 #### Tecnologias
 
@@ -23,6 +22,11 @@ Para desenvolver o projeto utilizamos as seguintes técnologias:
 - **Spring Boot 3** como framework web.
 - **MySQL 8.4** como banco de dados relacional
 - **Docker** como gerenciador de containers.
+
+### Requerimentos
+
+- É necessário estar com a porta **8080** livre para que o servidor web funcione corretamente. 
+- É necessário estar com a porta **3306** livre para que o banco de dados mysql funcione corretamente.
 
 ### Arquitetura
 

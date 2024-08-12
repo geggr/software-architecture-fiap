@@ -106,3 +106,9 @@ Esse script irá criar:
 - 1 cliente do restaurante
 - 5 pedidos
 
+### Front-End
+
+Para esse projeto não era necessário implementar um `front-end`, porém, para testar de maneira mais fidedigna
+a aplicação optamos por [criar um projeto que simulasse um totem de fast-food](https://github.com/geggr/totem-express-ui/)
+
+É possível observar a implementação das funcionalidades [dentro da nossa documentação](docs/totem-express-ui.md)

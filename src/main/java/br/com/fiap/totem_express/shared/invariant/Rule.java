@@ -1,5 +1,7 @@
 package br.com.fiap.totem_express.shared.invariant;
 
+import br.com.fiap.totem_express.shared.validators.CPFValidator;
+
 import java.math.BigDecimal;
 import java.util.Collection;
 import java.util.Objects;
@@ -57,6 +59,13 @@ public record Rule<T>(Predicate<T> predicate, String message){
     public static Rule<String> max(int max, String message) {
         return new Rule<>(
                 (string) -> string.length() <= max,
+                message
+        );
+    }
+
+    public static Rule<String> validCPF(String message){
+        return new Rule<>(
+                (cpf) -> CPFValidator.validate(cpf),
                 message
         );
     }

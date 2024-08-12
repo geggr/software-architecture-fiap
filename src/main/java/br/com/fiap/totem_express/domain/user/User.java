@@ -10,7 +10,7 @@ public class User {
 
     private String name;
     private String email;
-    private String cpf;
+    private CPF cpf;
     private LocalDateTime createdAt = LocalDateTime.now();
     private Role role;
     private Long id;
@@ -18,12 +18,12 @@ public class User {
     public User(String name, String email, String cpf, Role role) {
         Invariant.of(name, notBlank("User name must be not blank"));
         Invariant.of(email, notBlank("User email must be not blank"));
-        Invariant.of(cpf, notBlank("User cpf must be not blank"));
+        Invariant.of(cpf, notBlank("User cpf must be not blank"), validCPF("User cpf must be a valid document"));
         Invariant.of(role, notNull("User role must be not null"));
 
         this.name = name;
         this.email = email;
-        this.cpf = cpf;
+        this.cpf = new CPF(cpf);
         this.role = role;
     }
 
@@ -53,7 +53,7 @@ public class User {
     }
 
     public String getCpf() {
-        return cpf;
+        return cpf.formatted();
     }
 
     public LocalDateTime getCreatedAt() {

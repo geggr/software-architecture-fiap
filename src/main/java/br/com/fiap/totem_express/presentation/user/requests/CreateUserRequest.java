@@ -5,11 +5,12 @@ import br.com.fiap.totem_express.domain.user.User;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
+import org.hibernate.validator.constraints.br.CPF;
 
 public record CreateUserRequest(
         @NotNull @NotBlank String name,
         @NotNull @Email String email,
-        @NotNull @NotBlank String cpf
+        @NotNull @NotBlank @CPF String cpf
 ) implements NewUserInput {
     @Override
     public User toDomain() {

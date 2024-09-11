@@ -26,6 +26,7 @@ public class Order {
         this.total = total;
         this.user = user;
         this.status = status;
+        this.setTotal(items);
     }
 
     public Order(LocalDateTime createdAt, LocalDateTime updatedAt, Set<OrderItem> items, User user) {
@@ -88,5 +89,14 @@ public class Order {
 
     protected void setTotal(Set<OrderItem> items) {
         this.total = items.stream().map(OrderItem::getTotal).reduce(BigDecimal.ZERO, BigDecimal::add);
+    }
+
+    public void goToNextStep() {
+        this.status = status.next();
+    }
+
+    public void setItems(Set<OrderItem> orderItems) {
+        this.items = orderItems;
+        setTotal(items);
     }
 }

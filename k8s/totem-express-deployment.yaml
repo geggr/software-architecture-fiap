@@ -1,0 +1,29 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: totem-express
+  labels:
+    app: totem-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: totem-express
+  template:
+    metadata:
+      name: totem-express
+      labels:
+        app: totem-express
+    spec:
+      containers:
+        - name: totem-express
+          image: analuijesus/totem-express-webapp
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: totem-express-secret
+            - configMapRef:
+                name: totem-express-configmap

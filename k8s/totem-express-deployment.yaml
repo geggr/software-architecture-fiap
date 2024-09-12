@@ -11,7 +11,6 @@ spec:
       app: totem-express
   template:
     metadata:
-      name: totem-express
       labels:
         app: totem-express
     spec:
@@ -27,3 +26,10 @@ spec:
                 name: totem-express-secret
             - configMapRef:
                 name: totem-express-configmap
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi

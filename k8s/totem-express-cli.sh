@@ -68,16 +68,17 @@ function te_start() {
   kubectl create namespace $namespace --dry-run=client -o yaml | kubectl apply -f -
   log "Criando os recursos"
   for resource in "${RESOURCE_FILES[@]}"; do
-    log "Aplicando arquivo ${TF_BOLD}${resource}${TF_RESET} no namespace ${TF_BOLD}$namespace${TF_RESET}"
+    log "Aplicando arquivo ${TC_GREEN}${TF_BOLD}${resource}${TF_RESET} no namespace ${TF_BOLD}$namespace${TF_RESET}"
     kubectl apply -n $namespace -f $resource
   done
   get_node_ip
+  log "Esperando o serviço subir"
   until curl --output /dev/null --silent --head --fail http://${MINIKUBE_CLUSTER_IP}:30000/actuator/health/liveness; do
-      log "Esperando o serviço subir...\r"
-      sleep 1
+      echo -ne "."
+      sleep 2
   done
   log ""
-  log "Para acessar o programa acesse http://${MINIKUBE_CLUSTER_IP}:30000/"
+  log "Para acessar o programa acesse ${TC_GREEN}${TF_BOLD}http://${MINIKUBE_CLUSTER_IP}:30000/${TC_TF_RESET}"
 }
 
 function te_stop() {
@@ -104,26 +105,32 @@ function te_setup() {
   fi
   log "Pronto o cluster está pronto para rodar a aplicação"
   get_node_ip
-  log "O ip do cluster é: ${TC_RED}${TF_BOLD}${MINIKUBE_CLUSTER_IP}${TF_RESET}"
+  log "O ip do cluster é: ${TC_GREEN}${TF_BOLD}${MINIKUBE_CLUSTER_IP}${TF_RESET}"
 }
 
+# shellcheck disable=SC2120
 function te_copy_image(){
+  is_clean="$1"
   no_cache=""
   clean=""
-  if [[ $1 ]]; then
+  if [[ $is_clean ]]; then
     no_cache="--no-cache"
     clean="clean"
   fi
-  log "Vou construir o projeto e copiar a imagem para dentro do minikube"
   pushd ".."
-  log "Contruindo projeto  ${TC_RED}${TF_BOLD}sem rodar os testes!!!${TF_RESET}"
-  ./mvnw $clean package -DskipTests
+  log "Vou construir o projeto e copiar a imagem para dentro do minikube"
+  mkdir .m2 target
+  log "Construindo projeto ${TC_RED}${TF_BOLD}sem rodar os testes!!!${TF_RESET}"
+  docker run --rm --user 1000:1000 -w /home/ubuntu/totem-express \
+      -v ./:/home/ubuntu/totem-express -v ./.m2:/home/ubuntu/.m2 \
+       eclipse-temurin:22 ./mvnw $clean package -DskipTests
   log "Criando imagem docker"
   docker build -t $K8S_DEPLOYMENT_IMAGE_NAME . $no_cache
+  # shellcheck disable=SC2164
+  popd
   te_setup
   log "Copiando imagem para o minikube"
   mk_copy_image
-  popd
 }
 
 function te_help() {

@@ -13,11 +13,15 @@ spec:
     metadata:
       labels:
         app: totem-express
-    spec:
+    spec              :
+      initContainers:
+        - name: wait-for-mysql
+          image: appropriate/curl
+          command: [ 'sh', '-c', 'until nc -z -v -w30 totem-express-db-svc 3306; do echo "Waiting for MySQL..."; sleep 2; done;' ]
       containers:
         - name: totem-express
-          image: analuijesus/totem-express-webapp
-          imagePullPolicy: Always
+          image: totem-express:latest
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
               protocol: TCP
@@ -33,19 +37,19 @@ spec:
             limits:
               cpu: 500m
               memory: 500Mi
-#          livenessProbe:
-#            httpGet:
-#              path: /actuator/health/liveness
-#              port: 80
-#            initialDelaySeconds: 120 #TODO diminuir quando pararmos de compilar na imagem
-#            periodSeconds: 10
-#            timeoutSeconds: 5
-#            failureThreshold: 10 #TODO diminuir quando pararmos de compilar na imagem
-#          readinessProbe:
-#            httpGet:
-#              path: /actuator/health/readiness
-#              port: 80
-#            initialDelaySeconds: 120 #TODO diminuir quando pararmos de compilar na imagem
-#            periodSeconds: 5
-#            timeoutSeconds: 3
-#            failureThreshold: 10 #TODO diminuir quando pararmos de compilar na imagem
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 10

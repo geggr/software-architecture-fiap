@@ -19,9 +19,12 @@ MINIKUBE_CLUSTER_IP=""
 function mk() {
   minikube $@ -p $MINIKUBE_PROFILE
 }
-
+function mk_copy_image(){
+  mk image load ${K8S_DEPLOYMENT_IMAGE_NAME}
+}
 ### K8S helpers
 K8S_NAMESPACE="totem-express"
+K8S_DEPLOYMENT_IMAGE_NAME="library/totem-express:latest"
 
 ### APPLICATION HELPERS
 RESOURCE_FILES=("totem-express-configmap.yaml"
@@ -60,6 +63,7 @@ function te_start() {
     log "Como o minikube não está rodando ou configurado vou rodar o setup"
     te_setup
   fi
+  te_copy_image
   log "Criando namespace ${TF_BOLD}$namespace${TF_RESET}"
   kubectl create namespace $namespace --dry-run=client -o yaml | kubectl apply -f -
   log "Criando os recursos"
@@ -68,7 +72,12 @@ function te_start() {
     kubectl apply -n $namespace -f $resource
   done
   get_node_ip
-  log "Para acessar o progama acesse http://${MINIKUBE_CLUSTER_IP}:30000/"
+  until curl --output /dev/null --silent --head --fail http://${MINIKUBE_CLUSTER_IP}:30000/actuator/health/liveness; do
+      log "Esperando o serviço subir...\r"
+      sleep 1
+  done
+  log ""
+  log "Para acessar o programa acesse http://${MINIKUBE_CLUSTER_IP}:30000/"
 }
 
 function te_stop() {
@@ -98,19 +107,37 @@ function te_setup() {
   log "O ip do cluster é: ${TC_RED}${TF_BOLD}${MINIKUBE_CLUSTER_IP}${TF_RESET}"
 }
 
+function te_copy_image(){
+  no_cache=""
+  clean=""
+  if [[ $1 ]]; then
+    no_cache="--no-cache"
+    clean="clean"
+  fi
+  log "Vou construir o projeto e copiar a imagem para dentro do minikube"
+  pushd ".."
+  log "Contruindo projeto  ${TC_RED}${TF_BOLD}sem rodar os testes!!!${TF_RESET}"
+  ./mvnw $clean package -DskipTests
+  log "Criando imagem docker"
+  docker build -t $K8S_DEPLOYMENT_IMAGE_NAME . $no_cache
+  te_setup
+  log "Copiando imagem para o minikube"
+  mk_copy_image
+  popd
+}
+
 function te_help() {
-  log "Script facilitador para criar o cluster local e subir a aplicação valores padrões"
+  log "Script facilitador para criar o cluster local e subir a aplicação valores padrões:"
   log "\tminikube profile: ${TF_BOLD}${TC_GREEN}$MINIKUBE_PROFILE${TF_RESET}"
   log "\tminikube addons: ${TF_BOLD}${TC_GREEN}$MINIKUBE_ADDONS${TF_RESET}"
   log "\tk8s namespace: ${TF_BOLD}${TC_GREEN}$K8S_NAMESPACE${TF_RESET}"
-  log ""
   log "Como usar ./totem-express-cli.sh <commando> [parâmetros], commandos:"
   log "\t${TF_BOLD}${TC_GREEN}setup${TF_RESET}: apenas inicia o minikube e ativa os addons necessários para aplicação rodar"
   log "\t${TF_BOLD}${TC_GREEN}start [namespace]${TF_RESET}: dá start na minikube se estiver parado e cria os recursos e retorna o ip do node para acessar"
   log "\t${TF_BOLD}${TC_GREEN}stop [namespace]${TF_RESET}: para o minikube e consequentemente a aplicação"
   log "\t${TF_BOLD}${TC_GREEN}purge${TF_RESET}: ${TF_BOLD}remove tudo${TF_RESET} inclusive o cluster do minikube"
-  log "\t${TF_BOLD}${TC_GREEN}copy_image${TF_RESET}: faz build e copia a imagem local para o minikube"
-  log "Para funcionar corretamente precisa ter instalado o minikube, docker e kubectl"
+  log "\t${TF_BOLD}${TC_GREEN}copy_image [clean, padrão falso]${TF_RESET}: faz build e copia a imagem local para o minikube"
+  log "Para funcionar corretamente precisa ter instalado o ${TF_BOLD}${TC_GREEN}minikube, docker e kubectl${TF_RESET}"
 }
 
 subcommand=$1

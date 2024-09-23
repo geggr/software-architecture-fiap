@@ -2,6 +2,7 @@
 
 #### TEXT FORMATING HELPERS
 TC_RED=$(tput setaf 1)
+TC_GREEN=$(tput setaf 2)
 TF_BOLD=$(tput bold)
 TF_RESET=$(tput sgr0)
 
@@ -98,12 +99,17 @@ function te_setup() {
 }
 
 function te_help() {
+  log "Script facilitador para criar o cluster local e subir a aplicação valores padrões"
+  log "\tminikube profile: ${TF_BOLD}${TC_GREEN}$MINIKUBE_PROFILE${TF_RESET}"
+  log "\tminikube addons: ${TF_BOLD}${TC_GREEN}$MINIKUBE_ADDONS${TF_RESET}"
+  log "\tk8s namespace: ${TF_BOLD}${TC_GREEN}$K8S_NAMESPACE${TF_RESET}"
+  log ""
   log "Como usar ./totem-express-cli.sh <commando> [parâmetros], commandos:"
-  log "\t${TF_BOLD}setup${TF_RESET}: apenas inicia o minikube e ativa os addons necessários para aplicação rodar"
-  log "\t${TF_BOLD}start [namespace, padrão totem-express]${TF_RESET}: dá start na minikube se estiver parado e cria os recursos e retorna o ip do node para acessar"
-  log "\t${TF_BOLD}stop [namespace, padrão totem-express]${TF_RESET}: para o minikube e consequentemente a aplicação"
-  log "\t${TF_BOLD}purge${TF_RESET}: ${TF_BOLD}remove tudo${TF_RESET} inclusive o cluster do minikube"
-  log "\t${TF_BOLD}copy_image${TF_RESET}: faz build e copia a imagem local para o minikube"
+  log "\t${TF_BOLD}${TC_GREEN}setup${TF_RESET}: apenas inicia o minikube e ativa os addons necessários para aplicação rodar"
+  log "\t${TF_BOLD}${TC_GREEN}start [namespace]${TF_RESET}: dá start na minikube se estiver parado e cria os recursos e retorna o ip do node para acessar"
+  log "\t${TF_BOLD}${TC_GREEN}stop [namespace]${TF_RESET}: para o minikube e consequentemente a aplicação"
+  log "\t${TF_BOLD}${TC_GREEN}purge${TF_RESET}: ${TF_BOLD}remove tudo${TF_RESET} inclusive o cluster do minikube"
+  log "\t${TF_BOLD}${TC_GREEN}copy_image${TF_RESET}: faz build e copia a imagem local para o minikube"
   log "Para funcionar corretamente precisa ter instalado o minikube, docker e kubectl"
 }
 

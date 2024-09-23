@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: totem-express-db
+  labels:
+    app: totem-express-db
+spec:
+  selector:
+    matchLabels:
+      app: totem-express-db
+  serviceName: totem-express-db
+  replicas: 1
+  template:
+    metadata:
+      name: totem-express-db
+      labels:
+        app: totem-express-db
+    spec:
+      containers:
+        - name: totem-express-db
+          image: mysql:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 3306
+              protocol: TCP
+          volumeMounts:
+            - name: mysql-persistent-storage
+              mountPath: /var/lib/mysql
+          envFrom:
+            - secretRef:
+                name: totem-express-db-secret
+      restartPolicy: Always
+  volumeClaimTemplates:
+  - metadata:
+      name: mysql-persistent-storage
+    spec:
+      accessModes: [ "ReadWriteOnce" ]
+      resources:
+        requests:
+          storage: 1Gi

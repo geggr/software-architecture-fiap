@@ -64,7 +64,7 @@ public class OrderEntity {
     }
 
     public Order toDomain() {
-        return new Order(
+        var order = new Order(
                 id,
                 createdAt,
                 updatedAt,
@@ -72,5 +72,11 @@ public class OrderEntity {
                 Optional.ofNullable(user).map(UserEntity::toDomain).orElse(null),
                 status
         );
+
+        final var orderItems = items.stream().map(item -> item.toDomain(order)).collect(Collectors.toSet());
+
+        order.setItems(orderItems);
+
+        return order;
     }
 }

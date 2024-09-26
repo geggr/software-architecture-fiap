@@ -3,8 +3,10 @@ package br.com.fiap.totem_express.presentation.order;
 import br.com.fiap.totem_express.application.order.CreateOrderUseCase;
 import br.com.fiap.totem_express.application.order.ListOrderUseCase;
 import br.com.fiap.totem_express.application.order.OrderGateway;
+import br.com.fiap.totem_express.application.order.UpdateOrderStatusUseCase;
 import br.com.fiap.totem_express.application.order.impl.CreateOrderUseCaseImpl;
 import br.com.fiap.totem_express.application.order.impl.ListOrderUseCaseImpl;
+import br.com.fiap.totem_express.application.order.impl.UpdateOrderStatusUseCaseImpl;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.infrastructure.order.OrderGatewayImpl;
@@ -28,6 +30,11 @@ public class OrderConfiguration {
     @Bean
     public ListOrderUseCase listOrderUseCase() {
         return new ListOrderUseCaseImpl(orderGateway());
+    }
+
+    @Bean
+    public UpdateOrderStatusUseCase updateOrderStatusUseCase(){
+        return new UpdateOrderStatusUseCaseImpl(orderGateway());
     }
 
     @Bean

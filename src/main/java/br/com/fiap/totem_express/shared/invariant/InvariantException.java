@@ -9,6 +9,10 @@ public class InvariantException extends RuntimeException {
     private String message;
     private Object value;
 
+    public InvariantException(String message){
+        this.message = message;
+    }
+
     public InvariantException(String message, Object actual){
         this.message = message;
         this.value = actual;

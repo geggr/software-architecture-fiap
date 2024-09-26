@@ -2,7 +2,6 @@ package br.com.fiap.totem_express.infrastructure.order;
 
 import br.com.fiap.totem_express.application.order.*;
 import br.com.fiap.totem_express.domain.order.*;
-import org.springframework.stereotype.*;
 
 import java.util.*;
 
@@ -15,12 +14,19 @@ public class OrderGatewayImpl implements OrderGateway {
     }
 
     @Override
+    public void changeStatus(Order current) {
+        orderRepository.updateStatus(current);
+    }
+
+    @Override
+    public Optional<Order> findById(Long id) {
+        return orderRepository.findById(id).map(OrderEntity::toDomain);
+    }
+
+    @Override
     public List<Order> findAll() {
-        return orderRepository.findAllWithDeleteProducts().stream().map(orderEntity -> {
+        return orderRepository.findAllWithDeletedProducts().stream().map(orderEntity -> {
             Order orderDomain = orderEntity.toDomain();
-            orderEntity.getItems().forEach(itemEntity -> {
-               orderDomain.addItem(itemEntity.toDomain());
-            });
             return orderDomain;
         }).toList();
     }

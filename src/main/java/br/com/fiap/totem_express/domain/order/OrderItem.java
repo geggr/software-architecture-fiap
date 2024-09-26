@@ -28,7 +28,8 @@ public class OrderItem {
         this.total = this.calculateTotal();
     }
 
-    public OrderItem(LocalDateTime createdAt, ProductEntity product, Long quantity, BigDecimal total) {
+    public OrderItem(Long id, LocalDateTime createdAt, ProductEntity product, Long quantity, BigDecimal total) {
+        this.id = id;
         this.createdAt = createdAt;
         this.product = product.toDomain();
         this.quantity = quantity;

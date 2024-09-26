@@ -77,7 +77,7 @@ function te_start() {
       echo -ne "."
       sleep 2
   done
-  log ""
+  echo ""
   log "Para acessar o programa acesse ${TC_GREEN}${TF_BOLD}http://${MINIKUBE_CLUSTER_IP}:30000/${TC_TF_RESET}"
 }
 
@@ -119,7 +119,12 @@ function te_copy_image(){
   fi
   pushd ".."
   log "Vou construir o projeto e copiar a imagem para dentro do minikube"
-  mkdir .m2 target
+  if [[ ! -d ".m2" ]]; then
+    mkdir .m2
+  fi
+  if [[ ! -d "target" ]]; then
+      mkdir target
+  fi
   log "Construindo projeto ${TC_RED}${TF_BOLD}sem rodar os testes!!!${TF_RESET}"
   docker run --rm --user 1000:1000 -w /home/ubuntu/totem-express \
       -v ./:/home/ubuntu/totem-express -v ./.m2:/home/ubuntu/.m2 \

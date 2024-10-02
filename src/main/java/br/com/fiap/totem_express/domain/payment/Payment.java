@@ -18,4 +18,9 @@ public class Payment {
         this.transactionId = transactionId;
         this.amount = amount;
     }
+
+    public Payment(Status status, BigDecimal amount) {
+        this.status = status;
+        this.amount = amount;
+    }
 }

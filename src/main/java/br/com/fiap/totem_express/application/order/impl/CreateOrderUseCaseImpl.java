@@ -8,6 +8,8 @@ import br.com.fiap.totem_express.application.order.output.OrderView;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.domain.order.OrderItem;
+import br.com.fiap.totem_express.domain.payment.Payment;
+import br.com.fiap.totem_express.domain.payment.Status;
 import br.com.fiap.totem_express.domain.product.Product;
 
 import java.util.*;
@@ -39,6 +41,10 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
         }).collect(Collectors.toSet());
 
         final var domain = orderInput.toDomain(orderItemsDomain, userGateway);
+
+        final var payment = new Payment(Status.PENDING,domain.getTotal());
+        domain.setPayment(payment);
+
         final var created = orderGateway.create(domain);
         return new OrderView(created);
     }

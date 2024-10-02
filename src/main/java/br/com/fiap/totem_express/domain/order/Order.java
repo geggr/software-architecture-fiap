@@ -84,6 +84,10 @@ public class Order {
         return status;
     }
 
+    public void setPayment(Payment payment) {
+        this.payment = payment;
+    }
+
     //TODO ao adicionar item, somar no total
     public void addItem(OrderItem item) {
         items.add(item);

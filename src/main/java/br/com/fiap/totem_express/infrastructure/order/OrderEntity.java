@@ -53,6 +53,7 @@ public class OrderEntity {
         this.total = order.getTotal();
         this.user = order.getPossibleUser().map(UserEntity::new).orElse(null);
         this.items = order.getItems().stream().map(item -> new OrderItemEntity(item, this)).collect(Collectors.toSet());
+        this.payment = order.getPayment() != null ? new PaymentEntity(order.getPayment()) : null;
     }
 
     public void setId(Long id) {

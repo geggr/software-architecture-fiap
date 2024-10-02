@@ -23,4 +23,24 @@ public class Payment {
         this.status = status;
         this.amount = amount;
     }
+
+    public Long getId() {
+        return id;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public Long getTransactionId() {
+        return transactionId;
+    }
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
+
+    public Status getStatus() {
+        return status;
+    }
 }

@@ -25,7 +25,6 @@ public class PaymentEntity {
     @Enumerated(STRING)
     private Status status = Status.PENDING;
 
-    @NotNull
     private Long transactionId;
 
     @Positive
@@ -33,6 +32,14 @@ public class PaymentEntity {
 
     @Deprecated
     public PaymentEntity() {
+    }
+
+    public PaymentEntity(Payment payment) {
+        this.id = payment.getId();
+        this.createdAt = payment.getCreatedAt();
+        this.status = payment.getStatus();
+        this.transactionId = payment.getTransactionId();
+        this.amount = payment.getAmount();
     }
 
     public Payment toDomain() {

@@ -9,20 +9,23 @@ import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.infrastructure.order.OrderGatewayImpl;
 import br.com.fiap.totem_express.infrastructure.order.OrderRepository;
+import br.com.fiap.totem_express.infrastructure.payment.PaymentRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class OrderConfiguration {
     private final OrderRepository repository;
+    private final PaymentRepository paymentRepository;
 
-    public OrderConfiguration(OrderRepository repository) {
+    public OrderConfiguration(OrderRepository repository, PaymentRepository paymentRepository) {
         this.repository = repository;
+        this.paymentRepository = paymentRepository;
     }
 
     @Bean
     public OrderGateway orderGateway() {
-        return new OrderGatewayImpl(repository);
+        return new OrderGatewayImpl(repository, paymentRepository);
     }
 
     @Bean

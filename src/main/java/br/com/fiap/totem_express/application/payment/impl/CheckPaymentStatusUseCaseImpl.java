@@ -4,11 +4,11 @@ import br.com.fiap.totem_express.application.payment.PaymentGateway;
 import br.com.fiap.totem_express.application.payment.output.PaymentView;
 import br.com.fiap.totem_express.domain.payment.Payment;
 
-public class CheckPaymentStatusUseCase implements br.com.fiap.totem_express.application.payment.CheckPaymentStatusUseCase {
+public class CheckPaymentStatusUseCaseImpl implements br.com.fiap.totem_express.application.payment.CheckPaymentStatusUseCase {
 
     private final PaymentGateway gateway;
 
-    public CheckPaymentStatusUseCase(PaymentGateway gateway) {
+    public CheckPaymentStatusUseCaseImpl(PaymentGateway gateway) {
         this.gateway = gateway;
     }
 

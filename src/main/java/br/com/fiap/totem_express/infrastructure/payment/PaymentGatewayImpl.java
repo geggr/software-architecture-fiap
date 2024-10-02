@@ -17,4 +17,11 @@ public class PaymentGatewayImpl implements PaymentGateway {
     public Optional<Payment> findById(Long id) {
         return repository.findById(id).map(PaymentEntity::toDomain);
     }
+
+    @Override
+    public Payment save(Payment payment) {
+        PaymentEntity save = repository.save(new PaymentEntity(payment));
+        Payment domain = save.toDomain();
+        return domain;
+    }
 }

@@ -1,12 +1,17 @@
 package br.com.fiap.totem_express.domain.payment;
 
+import br.com.fiap.totem_express.shared.invariant.Invariant;
+
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
+
+import static br.com.fiap.totem_express.shared.invariant.Rule.notNull;
 
 public class Payment {
 
     private Long id;
     private LocalDateTime createdAt = LocalDateTime.now();
+    private LocalDateTime updatedAt;
     private Status status = Status.PENDING;
     private Long transactionId;
     private BigDecimal amount;
@@ -42,5 +47,11 @@ public class Payment {
 
     public Status getStatus() {
         return status;
+    }
+
+    public void processPayment(Status status) {
+        Invariant.of(status, notNull("Payment status must be not null"));
+        this.status = status;
+        this.updatedAt = LocalDateTime.now();
     }
 }

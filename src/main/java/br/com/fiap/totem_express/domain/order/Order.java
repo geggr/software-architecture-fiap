@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.*;
 
+import br.com.fiap.totem_express.domain.payment.Payment;
 import br.com.fiap.totem_express.domain.user.User;
 import br.com.fiap.totem_express.shared.invariant.Invariant;
 
@@ -18,14 +19,16 @@ public class Order {
     private BigDecimal total = BigDecimal.ZERO;
     private User user;
     private Status status = Status.RECEIVED;
+    private Payment payment;
 
-    public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal total, User user, Status status) {
+    public Order(Long id, LocalDateTime createdAt, LocalDateTime updatedAt, BigDecimal total, User user, Status status, Payment payment) {
         this.id = id;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.total = total;
         this.user = user;
         this.status = status;
+        this.payment = payment;
     }
 
     public Order(LocalDateTime createdAt, LocalDateTime updatedAt, Set<OrderItem> items, User user) {

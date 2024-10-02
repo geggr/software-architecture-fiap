@@ -1,15 +1,21 @@
 package br.com.fiap.totem_express.domain.payment;
 
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 
-import br.com.fiap.totem_express.domain.order.Order;
-
 public class Payment {
+
     private Long id;
     private LocalDateTime createdAt = LocalDateTime.now();
-    private LocalDateTime updatedAt = LocalDateTime.now();
-    private Order order;
     private Status status = Status.PENDING;
-    private String transactionId;
-    
+    private Long transactionId;
+    private BigDecimal amount;
+
+    public Payment(Long id, LocalDateTime createdAt, Status status, Long transactionId, BigDecimal amount) {
+        this.id = id;
+        this.createdAt = createdAt;
+        this.status = status;
+        this.transactionId = transactionId;
+        this.amount = amount;
+    }
 }

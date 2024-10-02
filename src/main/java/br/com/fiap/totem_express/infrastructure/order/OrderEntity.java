@@ -2,6 +2,7 @@ package br.com.fiap.totem_express.infrastructure.order;
 
 import br.com.fiap.totem_express.domain.order.*;
 import br.com.fiap.totem_express.domain.user.*;
+import br.com.fiap.totem_express.infrastructure.payment.PaymentEntity;
 import br.com.fiap.totem_express.infrastructure.user.*;
 import jakarta.annotation.*;
 import jakarta.persistence.*;
@@ -39,6 +40,9 @@ public class OrderEntity {
     @Enumerated(EnumType.STRING)
     private Status status = Status.RECEIVED;
 
+    @OneToOne
+    private PaymentEntity payment;
+
     @Deprecated
     public OrderEntity() {
     }
@@ -70,7 +74,8 @@ public class OrderEntity {
                 updatedAt,
                 total,
                 Optional.ofNullable(user).map(UserEntity::toDomain).orElse(null),
-                status
+                status,
+                payment.toDomain()
         );
     }
 }

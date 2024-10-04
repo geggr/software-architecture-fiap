@@ -30,6 +30,8 @@ public class PaymentEntity {
     @Positive
     private BigDecimal amount;
 
+    private String qrCode;
+
     @Deprecated
     public PaymentEntity() {
     }
@@ -40,9 +42,10 @@ public class PaymentEntity {
         this.status = payment.getStatus();
         this.transactionId = payment.getTransactionId();
         this.amount = payment.getAmount();
+        this.qrCode = payment.getQrCode();
     }
 
     public Payment toDomain() {
-        return new Payment(id, createdAt, status, transactionId, amount);
+        return new Payment(id, createdAt, status, transactionId, amount, qrCode);
     }
 }

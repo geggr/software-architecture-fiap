@@ -15,13 +15,15 @@ public class Payment {
     private Status status = Status.PENDING;
     private Long transactionId;
     private BigDecimal amount;
+    private String qrCode;
 
-    public Payment(Long id, LocalDateTime createdAt, Status status, Long transactionId, BigDecimal amount) {
+    public Payment(Long id, LocalDateTime createdAt, Status status, Long transactionId, BigDecimal amount, String qrCode) {
         this.id = id;
         this.createdAt = createdAt;
         this.status = status;
         this.transactionId = transactionId;
         this.amount = amount;
+        this.qrCode = qrCode;
     }
 
     public Payment(Status status, BigDecimal amount) {
@@ -47,6 +49,10 @@ public class Payment {
 
     public Status getStatus() {
         return status;
+    }
+
+    public String getQrCode() {
+        return qrCode;
     }
 
     public void processPayment(Status status) {

@@ -5,6 +5,7 @@ import br.com.fiap.totem_express.application.order.OrderGateway;
 import br.com.fiap.totem_express.application.order.input.CreateOrderInput;
 import br.com.fiap.totem_express.application.order.input.OrderItemInput;
 import br.com.fiap.totem_express.application.order.output.OrderView;
+import br.com.fiap.totem_express.application.payment.QRCodeGateway;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
 import br.com.fiap.totem_express.domain.order.OrderItem;
@@ -19,11 +20,13 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
     private final OrderGateway orderGateway;
     private final ProductGateway productGateway;
     private final UserGateway userGateway;
+    private final QRCodeGateway qrCodeGateway;
 
-    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway, UserGateway userGateway) {
+    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway, UserGateway userGateway, QRCodeGateway qrCodeGateway) {
         this.orderGateway = orderGateway;
         this.productGateway = productGateway;
         this.userGateway = userGateway;
+        this.qrCodeGateway = qrCodeGateway;
     }
 
     @Override
@@ -42,7 +45,10 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
 
         final var domain = orderInput.toDomain(orderItemsDomain, userGateway);
 
-        final var payment = new Payment(Status.PENDING,domain.getTotal());
+        final var payment = new Payment(Status.PENDING, domain.getTotal());
+        Payment qrCode = qrCodeGateway.generateQRCode(payment.getTransactionId(), payment.getAmount());
+
+        payment.setQrCode(qrCode.getQrCode());
         domain.setPayment(payment);
 
         final var created = orderGateway.create(domain);

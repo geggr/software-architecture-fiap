@@ -55,6 +55,10 @@ public class Payment {
         return qrCode;
     }
 
+    public void setQrCode(String qrCode) {
+        this.qrCode = qrCode;
+    }
+
     public void processPayment(Status status) {
         Invariant.of(status, notNull("Payment status must be not null"));
         this.status = status;

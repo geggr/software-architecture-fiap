@@ -3,18 +3,20 @@ package br.com.fiap.totem_express.presentation.payment;
 import br.com.fiap.totem_express.application.payment.*;
 import br.com.fiap.totem_express.application.payment.impl.CheckPaymentStatusUseCaseImpl;
 import br.com.fiap.totem_express.application.payment.impl.ProcessPaymentWebhookUseCaseImpl;
-import br.com.fiap.totem_express.infrastructure.payment.PaymentGatewayImpl;
-import br.com.fiap.totem_express.infrastructure.payment.PaymentRepository;
+import br.com.fiap.totem_express.infrastructure.payment.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class PaymentConfiguration {
 
     private final PaymentRepository repository;
+    private final RestTemplate restTemplate;
 
-    public PaymentConfiguration(PaymentRepository repository) {
+    public PaymentConfiguration(PaymentRepository repository, RestTemplate restTemplate) {
         this.repository = repository;
+        this.restTemplate = restTemplate;
     }
 
     @Bean
@@ -30,5 +32,10 @@ public class PaymentConfiguration {
     @Bean
     public ProcessPaymentWebhookUseCase processPaymentWebhookUseCase() {
         return new ProcessPaymentWebhookUseCaseImpl(paymentGateway());
+    }
+
+    @Bean
+    QRCodeGateway qrCodeGateway() {
+        return new GenerateQRCodeRequester(restTemplate);
     }
 }

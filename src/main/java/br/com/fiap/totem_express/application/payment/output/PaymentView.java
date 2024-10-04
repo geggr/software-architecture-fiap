@@ -8,6 +8,8 @@ public interface PaymentView {
 
     Status status();
 
-    record SimpleView(Long id, Status status) implements PaymentView {
+    String qrCode();
+
+    record SimpleView(Long id, Status status, String qrCode) implements PaymentView {
     }
 }

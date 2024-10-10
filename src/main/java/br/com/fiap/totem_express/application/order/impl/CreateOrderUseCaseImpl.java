@@ -54,8 +54,6 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
 
         payment.setQrCode(qrCode.getQrData());
 
-        paymentGateway.create(payment);
-
         final var created = orderGateway.create(domain);
         return new OrderView(created);
     }

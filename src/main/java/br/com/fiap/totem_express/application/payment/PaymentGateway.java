@@ -8,5 +8,5 @@ public interface PaymentGateway {
 
     Optional<Payment> findById(Long id);
 
-    Payment save(Payment payment);
+    Payment create(Payment payment);
 }

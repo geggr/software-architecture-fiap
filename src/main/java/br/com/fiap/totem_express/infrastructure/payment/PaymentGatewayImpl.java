@@ -19,7 +19,7 @@ public class PaymentGatewayImpl implements PaymentGateway {
     }
 
     @Override
-    public Payment save(Payment payment) {
+    public Payment create(Payment payment) {
         PaymentEntity save = repository.save(new PaymentEntity(payment));
         Payment domain = save.toDomain();
         return domain;

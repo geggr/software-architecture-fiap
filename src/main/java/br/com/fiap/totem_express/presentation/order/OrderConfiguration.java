@@ -5,6 +5,7 @@ import br.com.fiap.totem_express.application.order.ListOrderUseCase;
 import br.com.fiap.totem_express.application.order.OrderGateway;
 import br.com.fiap.totem_express.application.order.impl.CreateOrderUseCaseImpl;
 import br.com.fiap.totem_express.application.order.impl.ListOrderUseCaseImpl;
+import br.com.fiap.totem_express.application.payment.PaymentGateway;
 import br.com.fiap.totem_express.application.payment.QRCodeGateway;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
@@ -35,7 +36,7 @@ public class OrderConfiguration {
     }
 
     @Bean
-    public CreateOrderUseCase createOrderUseCase(ProductGateway productGateway, UserGateway userGateway, QRCodeGateway qrCodeGateway) {
-        return new CreateOrderUseCaseImpl(orderGateway(), productGateway, userGateway, qrCodeGateway);
+    public CreateOrderUseCase createOrderUseCase(ProductGateway productGateway, UserGateway userGateway, PaymentGateway paymentGateway, QRCodeGateway qrCodeGateway) {
+        return new CreateOrderUseCaseImpl(orderGateway(), productGateway, userGateway, paymentGateway, qrCodeGateway);
     }
 }

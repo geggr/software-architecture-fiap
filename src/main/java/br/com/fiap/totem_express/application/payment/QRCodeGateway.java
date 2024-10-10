@@ -1,9 +1,8 @@
 package br.com.fiap.totem_express.application.payment;
 
-import br.com.fiap.totem_express.domain.payment.Payment;
-
-import java.math.BigDecimal;
+import br.com.fiap.totem_express.domain.order.Order;
+import br.com.fiap.totem_express.infrastructure.payment.qrcode.QRCodeResponse;
 
 public interface QRCodeGateway {
-    Payment generateQRCode(Long transactionId, BigDecimal amount);
+    QRCodeResponse generateQRCode(Order order);
 }

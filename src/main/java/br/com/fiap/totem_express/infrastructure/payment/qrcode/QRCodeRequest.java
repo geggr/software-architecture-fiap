@@ -1,4 +1,4 @@
-package br.com.fiap.totem_express.presentation.payment.request;
+package br.com.fiap.totem_express.infrastructure.payment.qrcode;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

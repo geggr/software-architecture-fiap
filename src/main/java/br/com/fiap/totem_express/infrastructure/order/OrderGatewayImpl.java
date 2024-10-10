@@ -4,7 +4,6 @@ import br.com.fiap.totem_express.application.order.*;
 import br.com.fiap.totem_express.domain.order.*;
 import br.com.fiap.totem_express.infrastructure.payment.PaymentEntity;
 import br.com.fiap.totem_express.infrastructure.payment.PaymentRepository;
-import org.springframework.stereotype.*;
 
 import java.util.*;
 

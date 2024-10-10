@@ -10,7 +10,7 @@ import java.time.LocalDateTime;
 
 import static jakarta.persistence.EnumType.STRING;
 
-@Entity
+@Entity(name = "payment")
 public class PaymentEntity {
 
     @Id
@@ -25,7 +25,7 @@ public class PaymentEntity {
     @Enumerated(STRING)
     private Status status = Status.PENDING;
 
-    private Long transactionId;
+    private String transactionId;
 
     @Positive
     private BigDecimal amount;

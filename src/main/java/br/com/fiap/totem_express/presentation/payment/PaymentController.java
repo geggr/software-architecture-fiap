@@ -23,7 +23,7 @@ public class PaymentController implements PaymentDocumentation {
 
     @Override
     @GetMapping("/api/payment/{id}")
-    public ResponseEntity<PaymentView> checkPaymentStatus(Long id) {
+    public ResponseEntity<PaymentView> checkPaymentStatus(@PathVariable Long id) {
         PaymentView check = checkPaymentStatusUseCase.checkStatus(id);
         return ResponseEntity.ok(check);
     }

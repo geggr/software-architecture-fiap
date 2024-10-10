@@ -1,20 +1,20 @@
-package br.com.fiap.totem_express.infrastructure.payment.qrcode;
+package br.com.fiap.totem_express.infrastructure.payment.mercadopago;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class QRCodeResponse {
+public class PaymentProcessorResponse {
 
     @JsonProperty("qr_data")
     private String qrData;
     @JsonProperty("in_store_order_id")
     private String storeOrderId;
 
-    public QRCodeResponse(String qrData, String storeOrderId) {
+    public PaymentProcessorResponse(String qrData, String storeOrderId) {
         this.qrData = qrData;
         this.storeOrderId = storeOrderId;
     }
 
-    public QRCodeResponse() {
+    public PaymentProcessorResponse() {
     }
 
     public String getQrData() {

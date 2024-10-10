@@ -17,6 +17,11 @@ public class ProcessPaymentWebhookUseCaseImpl implements ProcessPaymentWebhookUs
     public void process(Long paymentId, PaymentWebhookInput input) {
         Payment payment = gateway.findById(paymentId)
                 .orElseThrow(() -> new IllegalArgumentException("Payment must exists invalid id " + paymentId));
+
+        if (!payment.isPaid()) {
+            throw new IllegalStateException("Payment is not paid yet");
+        }
+
         payment.processPayment(input.status());
         gateway.create(payment);
     }

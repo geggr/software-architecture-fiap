@@ -6,6 +6,7 @@ import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
+import static br.com.fiap.totem_express.domain.payment.Status.PAID;
 import static br.com.fiap.totem_express.shared.invariant.Rule.notNull;
 
 public class Payment {
@@ -28,6 +29,7 @@ public class Payment {
     }
 
     public Payment(BigDecimal amount) {
+        Invariant.of(amount, notNull("Payment amount must be not null"));
         this.amount = amount;
         this.transactionId = UUID.randomUUID().toString();
     }
@@ -60,8 +62,8 @@ public class Payment {
         this.qrCode = qrCode;
     }
 
-    public void updateQRCode(String qrCode) {
-        this.qrCode = qrCode;
+    public boolean isPaid() {
+        return PAID.equals(this.status);
     }
 
     public void processPayment(Status status) {

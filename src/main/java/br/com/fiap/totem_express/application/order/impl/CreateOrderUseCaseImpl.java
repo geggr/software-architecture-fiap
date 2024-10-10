@@ -5,14 +5,16 @@ import br.com.fiap.totem_express.application.order.OrderGateway;
 import br.com.fiap.totem_express.application.order.input.*;
 import br.com.fiap.totem_express.application.order.output.OrderView;
 import br.com.fiap.totem_express.application.payment.PaymentGateway;
-import br.com.fiap.totem_express.application.payment.QRCodeGateway;
+import br.com.fiap.totem_express.application.payment.PaymentProcessorGateway;
+import br.com.fiap.totem_express.application.payment.input.GenerateQRCodeInput;
 import br.com.fiap.totem_express.application.product.ProductGateway;
 import br.com.fiap.totem_express.application.user.*;
+import br.com.fiap.totem_express.domain.order.Order;
 import br.com.fiap.totem_express.domain.order.OrderItem;
 import br.com.fiap.totem_express.domain.payment.Payment;
-import br.com.fiap.totem_express.domain.payment.Status;
 import br.com.fiap.totem_express.domain.product.Product;
-import jakarta.transaction.Transactional;
+import br.com.fiap.totem_express.infrastructure.payment.mercadopago.PaymentQRCodeItem;
+import br.com.fiap.totem_express.infrastructure.payment.mercadopago.PaymentQRCodeRequest;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -21,14 +23,12 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
     private final OrderGateway orderGateway;
     private final ProductGateway productGateway;
     private final UserGateway userGateway;
-    private final PaymentGateway paymentGateway;
-    private final QRCodeGateway qrCodeGateway;
+    private final PaymentProcessorGateway qrCodeGateway;
 
-    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway, UserGateway userGateway, PaymentGateway paymentGateway, QRCodeGateway qrCodeGateway) {
+    public CreateOrderUseCaseImpl(OrderGateway orderGateway, ProductGateway productGateway, UserGateway userGateway, PaymentProcessorGateway qrCodeGateway) {
         this.orderGateway = orderGateway;
         this.productGateway = productGateway;
         this.userGateway = userGateway;
-        this.paymentGateway = paymentGateway;
         this.qrCodeGateway = qrCodeGateway;
     }
 
@@ -50,7 +50,8 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
         Payment payment = new Payment(domain.getTotal());
         domain.setPayment(payment);
 
-        final var qrCode = qrCodeGateway.generateQRCode(domain);
+        GenerateQRCodeInput qrCodeInput = toQRCodeInput(domain);
+        final var qrCode = qrCodeGateway.createPaymentQRCode(qrCodeInput);
 
         payment.setQrCode(qrCode.getQrData());
 
@@ -77,4 +78,25 @@ public class CreateOrderUseCaseImpl implements CreateOrderUseCase {
             throw new IllegalArgumentException("OrderItem must have a positive quantity");
         }
     }
+
+    private GenerateQRCodeInput toQRCodeInput(Order order) {
+        return new PaymentQRCodeRequest(
+                order.getPayment().getTransactionId(),
+                UUID.randomUUID().toString(),
+                order.getItems().stream().map(OrderItem::getProduct).map(Product::getDescription).collect(Collectors.joining(", ")),
+                order.getTotal(),
+                order.getItems().stream()
+                        .map(item -> new PaymentQRCodeItem(
+                                item.getProduct().getName(),
+                                item.getProduct().getName(),
+                                item.getProduct().getDescription(),
+                                item.getProduct().getPrice(),
+                                item.getQuantity(),
+                                "unit",
+                                item.getTotal()
+                        ))
+                        .collect(Collectors.toList())
+        );
+    }
+
 }

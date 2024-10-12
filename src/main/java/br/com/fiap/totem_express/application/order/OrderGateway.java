@@ -6,6 +6,7 @@ import java.util.*;
 
 public interface OrderGateway {
     List<Order> findAll();
-
+    Optional<Order> findById(Long id);
     Order create(Order domain);
+    void changeStatus(Order current);
 }

@@ -2,18 +2,14 @@ package br.com.fiap.totem_express.presentation.order;
 
 import br.com.fiap.totem_express.application.order.CreateOrderUseCase;
 import br.com.fiap.totem_express.application.order.ListOrderUseCase;
+import br.com.fiap.totem_express.application.order.UpdateOrderStatusUseCase;
 import br.com.fiap.totem_express.application.order.output.OrderView;
-import br.com.fiap.totem_express.application.product.ProductGateway;
-import br.com.fiap.totem_express.application.user.UserGateway;
 import br.com.fiap.totem_express.presentation.order.requests.CreateOrderRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -21,11 +17,13 @@ import java.util.List;
 public class OrderController implements OrderDocumentation {
 
     private final CreateOrderValidator orderValidator;
+    private final UpdateOrderStatusUseCase updateOrderStatusUseCase;
     private final ListOrderUseCase listOrderUseCase;
     private final CreateOrderUseCase createOrderUseCase;
 
-    public OrderController(CreateOrderValidator orderValidator, ListOrderUseCase listOrderUseCase, CreateOrderUseCase createOrderUseCase) {
+    public OrderController(CreateOrderValidator orderValidator, UpdateOrderStatusUseCase updateOrderStatusUseCase, ListOrderUseCase listOrderUseCase, CreateOrderUseCase createOrderUseCase) {
         this.orderValidator = orderValidator;
+        this.updateOrderStatusUseCase = updateOrderStatusUseCase;
         this.listOrderUseCase = listOrderUseCase;
         this.createOrderUseCase = createOrderUseCase;
     }
@@ -43,6 +41,11 @@ public class OrderController implements OrderDocumentation {
             return ResponseEntity.noContent().build();
         }
         return ResponseEntity.ok(orders);
+    }
+
+    @GetMapping("/api/order/{id}/next")
+    public ResponseEntity goToNextStatus(@PathVariable("id") Long id){
+        return ResponseEntity.ok(updateOrderStatusUseCase.changeStatus(id));
     }
 
     @PostMapping("/api/order/create")

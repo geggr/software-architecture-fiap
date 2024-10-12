@@ -30,4 +30,11 @@ public interface OrderDocumentation {
             @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
     })
     ResponseEntity create(CreateOrderRequest createOrderRequest);
+
+    @Operation(summary = "Atualiza Status", description = "Muda o status do pedido para o próximo")
+    @ApiResponses({
+            @ApiResponse(responseCode = "200",description = "Status atualizado com sucesso", content = {@Content(array = @ArraySchema(schema = @Schema(implementation = OrderView.class)), mediaType = "application/json")}),
+            @ApiResponse(responseCode = "500", description = "Erro interno do sistema", content = {@Content(schema = @Schema())})
+    })
+    ResponseEntity goToNextStatus(Long id);
 }

@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: totem-express
+  labels:
+    app: totem-express
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: totem-express
+  template:
+    metadata:
+      labels:
+        app: totem-express
+    spec              :
+      initContainers:
+        - name: wait-for-mysql
+          image: appropriate/curl
+          command: [ 'sh', '-c', 'until nc -z -v -w30 totem-express-db-svc 3306; do echo "Waiting for MySQL..."; sleep 1; done;' ]
+      containers:
+        - name: totem-express
+          image: totem-express:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 80
+              protocol: TCP
+          envFrom:
+            - secretRef:
+                name: totem-express-secret
+            - configMapRef:
+                name: totem-express-configmap
+          resources:
+            requests:
+              cpu: 100m
+              memory: 500Mi
+            limits:
+              cpu: 500m
+              memory: 500Mi
+          livenessProbe:
+            httpGet:
+              path: /actuator/health/liveness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 10
+          readinessProbe:
+            httpGet:
+              path: /actuator/health/readiness
+              port: 8080
+            initialDelaySeconds: 5
+            periodSeconds: 2
+            timeoutSeconds: 1
+            failureThreshold: 10

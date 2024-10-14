@@ -23,7 +23,7 @@ public interface OrderRepository extends JpaRepository<OrderEntity, Long> {
             END,
             order.createdAt
     """)
-    @EntityGraph(attributePaths = { "items", "user", "items.product" })
+    @EntityGraph(attributePaths = { "items", "user", "items.product", "payment" })
     List<OrderEntity> findAllWithDeletedProducts();
 
 

@@ -9,6 +9,30 @@ O "Totem Express" tem como objetivo ser um sistema de gestão interna de restaur
 
 O Event Storm e a documentação dos eventos pivotais pode ser encontrado [no seguinte Miro](https://miro.com/app/board/uXjVK3rqGz4=/?share_link_id=859281805316)
 
+### Tech Challenge - 2
+
+Abaixo é possível encontrar os links dos entregáveis da segunda parte do Tech Challenge:
+
+- [Apresentação Totem Express](https://www.youtube.com/watch?v=1tUoONgTAUQ)
+- [Arquitetura Totem Express](https://1drv.ms/i/c/2a3ce5fc95d7c822/EawciBkU0GhJheBFQu3EswMBhaPUpQd3Yjrpr-VWEwuIRw?e=OnmlGN)
+
+### Kubernetes
+
+![img.png](docs/screenshots/img.png)
+
+Para o segundo tech-challenge optamos por utilizar o Minikube de maneira local para montar a nossa infraestrutura, os arquivos de manifesto podem ser encontrados [dentro da pasta k8s](./k8s).
+
+Em relação a nossa escolha arquitetura optamos por:
+
+- Um **Horizontal Pod Autoscalling (HPA)** que irá referenciar o **Deployment** da nossa aplicação, sendo responsável por aumentar e diminuir a quantidade de pods de acordo com as métricas de recursos definidas.
+Desta forma, conseguimos garantir que a aplicação se matenha estável durante horários de pico (almoço e jantar).
+- Um **Deployment** que inicia um servidor Java com Springboot
+- Um Service do tipo **"Load Balancer"** para expor um ip público e fazer o balanceamento de carga das requisições para os pods
+- Um **StatefulSet**  para iniciar uma imagem do banco **MySQL** e obter um **volume persistente de dados (PV)**
+- Um **Service** para fazer a comunicação interna entre as aplicações do cluster e banco de dados
+- **Secrets** e **Configmaps** para prover as definições de configurações e senhas, tanto para a aplicação java, quanto para o banco de dados.
+---
+
 #### Tecnologias
 
 ![java](https://img.shields.io/badge/Java_22-000?style=for-the-badge&logo=oracle&logoColor=white)
@@ -23,7 +47,7 @@ Para desenvolver o projeto utilizamos as seguintes técnologias:
 - **MySQL 8.4** como banco de dados relacional
 - **Docker** como gerenciador de containers.
 
-### Requerimentos
+### Requerimentos (Rodando de Forma Local)
 
 - É necessário estar com a porta **8080** livre para que o servidor web funcione corretamente. 
 - É necessário estar com a porta **3306** livre para que o banco de dados mysql funcione corretamente.
@@ -81,16 +105,19 @@ docker compose up
 
 ### Rotas da Aplicação 
 
-| Endpoint                 | Método HTTP | Parâmetros  de Busca          | Descrição                     |
-|--------------------------|-------------|-------------------------------|-------------------------------|
-| `/api/users`             | `POST`      |                               | Cria um usuário (cliente) comum no sistema         
-| `/api/users?document`    | `GET`       | Documento (CPF) do usuário    | Retorna o usuário cadastrado no sistema com aquele CPF. 
-| `/api/product`           | `POST`      |                               | Cadastra um produto no Totem.
-| `/api/product`           | `PUT`       |                               | Atualiza informações do produto no Totem.
-| `/api/product`           | `DELETE`    |                               | Remove um produto do Totem.            
-| `/api/product/{category}`| `GET`       | Categoria do Produto Desejado | Retorna os produtos cadastrados no Totem para determinada categoria.
-| `/api/order/create`      | `POST`      |                               | Cadastra um pedido no sistema.
-| `/api/order/list`        | `GET`       |                               | Retorna os pedidos cadastrados no sistema.
+| Endpoint                    | Método HTTP | Parâmetros  de Busca          | Descrição                     |
+|-----------------------------|-------------|-------------------------------|-------------------------------|
+| `/api/users`                | `POST`      |                               | Cria um usuário (cliente) comum no sistema         
+| `/api/users?document`       | `GET`       | Documento (CPF) do usuário    | Retorna o usuário cadastrado no sistema com aquele CPF. 
+| `/api/product`              | `POST`      |                               | Cadastra um produto no Totem.
+| `/api/product`              | `PUT`       |                               | Atualiza informações do produto no Totem.
+| `/api/product`              | `DELETE`    |                               | Remove um produto do Totem.            
+| `/api/product/{category}`   | `GET`       | Categoria do Produto Desejado | Retorna os produtos cadastrados no Totem para determinada categoria.
+| `/api/order/create`         | `POST`      |                               | Cadastra um pedido no sistema.
+| `/api/order/list`           | `GET`       |                               | Retorna os pedidos cadastrados no sistema.
+| `/api/order/{id}/next`      | `GET`       | Identificaodr do pedido       | Atualiza o status do pedido para a próxima etapa
+| `/api/payment/id`           | `GET`       |                               | Checa o status de um pagamento
+| `/api/payment/process/{id}` | `POST`      | Identificador da transação    | Processa o pagamento de um pedido
 
 
 ### Populando o Banco de Dados

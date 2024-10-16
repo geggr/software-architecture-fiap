@@ -18,7 +18,7 @@ Abaixo é possível encontrar os links dos entregáveis da segunda parte do Tech
 
 ### Kubernetes
 
-![img.png](docs/screenshots/img.png)
+![img.png](docs/screenshots/arquitetura-minikube.png)
 
 Para o segundo tech-challenge optamos por utilizar o Minikube de maneira local para montar a nossa infraestrutura, os arquivos de manifesto podem ser encontrados [dentro da pasta k8s](./k8s).
 

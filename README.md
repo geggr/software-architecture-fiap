@@ -137,7 +137,6 @@ Esse script irá criar:
 - 1 cliente do restaurante
 - 5 pedidos
 
-
 ### Testando chamadas às APIs da aplicação
 
 Temos uma collection do Postman no projeto que executa todas nossas chamadas de API, já com exemplos populados e que, se executados em ordem, seguirão um fluxo específico que explore toda nossa API. No caso, esse fluxo é:
@@ -157,7 +156,7 @@ Temos uma collection do Postman no projeto que executa todas nossas chamadas de 
 - consulta o status do pagamento do pedido feito
 - atualiza o status do pagamento do pedido feito, sinalizando que está pago
 
-A collection se encontra [neste arquivo do projeto](docs/postman/Totem Express.postman_collection.json).
+A collection se encontra [neste arquivo do projeto](docs/postman/Totem%20Express.postman_collection.json).
 
 ### Front-End
 

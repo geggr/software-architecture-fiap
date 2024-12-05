@@ -14,6 +14,10 @@ public record CreateOrderRequest(
         Optional<Long> possibleUserId
 ) implements CreateOrderInput {
 
+    public CreateOrderRequest with(Long userId){
+        return new CreateOrderRequest(orderItemsRequest, Optional.of(userId));
+    }
+
     @Override
     public Set<OrderItemInput> orderItems() {
         return orderItemsRequest() == null ? null : new HashSet<>(orderItemsRequest());

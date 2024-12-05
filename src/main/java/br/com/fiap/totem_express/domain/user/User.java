@@ -52,6 +52,10 @@ public class User {
         return email;
     }
 
+    public CPF getDocument(){
+        return cpf;
+    }
+
     public String getCpf() {
         return cpf.formatted();
     }

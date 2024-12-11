@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - name: totem-express-db
-          image: mysql:latest
+          image: 924978846501.dkr.ecr.us-east-1.amazonaws.com/totem_express:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 3306

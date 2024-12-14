@@ -20,7 +20,7 @@ spec:
           command: [ 'sh', '-c', 'until nc -z -v -w30 totem-express-db-svc 3306; do echo "Waiting for MySQL..."; sleep 1; done;' ]
       containers:
         - name: totem-express
-          image: totem-express:latest
+          image: 924978846501.dkr.ecr.us-east-1.amazonaws.com/totem_express:latest
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 80
@@ -32,11 +32,11 @@ spec:
                 name: totem-express-configmap
           resources:
             requests:
-              cpu: 100m
-              memory: 500Mi
+              cpu: 1000m
+              memory: 2Gi
             limits:
-              cpu: 500m
-              memory: 500Mi
+              cpu: 2000m
+              memory: 2Gi
           livenessProbe:
             httpGet:
               path: /actuator/health/liveness

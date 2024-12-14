@@ -4,6 +4,7 @@ import br.com.fiap.totem_express.application.order.CreateOrderUseCase;
 import br.com.fiap.totem_express.application.order.ListOrderUseCase;
 import br.com.fiap.totem_express.application.order.UpdateOrderStatusUseCase;
 import br.com.fiap.totem_express.application.order.output.OrderView;
+import br.com.fiap.totem_express.infrastructure.security.ApplicationUser;
 import br.com.fiap.totem_express.presentation.order.requests.CreateOrderRequest;
 import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
@@ -44,13 +45,18 @@ public class OrderController implements OrderDocumentation {
     }
 
     @GetMapping("/api/order/{id}/next")
-    public ResponseEntity goToNextStatus(@PathVariable("id") Long id){
+    public ResponseEntity<?> goToNextStatus(@PathVariable("id") Long id){
         return ResponseEntity.ok(updateOrderStatusUseCase.changeStatus(id));
     }
 
     @PostMapping("/api/order/create")
-    public ResponseEntity create(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
-        OrderView execute = createOrderUseCase.execute(createOrderRequest);
+    public ResponseEntity<?> create(@Valid @RequestBody CreateOrderRequest createOrderRequest) {
+        final var request = ApplicationUser
+                .retrieveUserId()
+                .map(createOrderRequest::with)
+                .orElse(createOrderRequest);
+
+        OrderView execute = createOrderUseCase.execute(request);
         return ResponseEntity.status(201).body(execute);
     }
 }

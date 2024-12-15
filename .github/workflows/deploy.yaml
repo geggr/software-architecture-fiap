@@ -2,9 +2,20 @@ name: Deploy to ECR
 
 on:
   push:
+    paths:
+      - 'src/**'
+      - 'k8s/**'
+      - 'Dockerfile'
+      - 'pom.xml'
     branches:
       - main
   pull_request:
+    paths:
+      - 'src/**'
+      - 'k8s/**'
+      - 'Dockerfile'
+      - 'pom.xml'
+
 
 jobs:
   build:

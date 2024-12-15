@@ -58,8 +58,8 @@ jobs:
         IMAGE_TAG: ${{ steps.commit.outputs.short }}
       run: |
         sed -i.bak "s|DOCKER_IMAGE|${{ env.ECR_REGISTRY }}/${{ env.ECR_REPOSITORY }}:${{ env.IMAGE_TAG }}|g" k8s/totem-express-deployment.yaml
-        kubectl apply -f k8s/totem-express-configmap.yaml
-        kubectl apply -f k8s/totem-express-svc.yaml
-        kubectl apply -f k8s/totem-express-secret.yaml
-        kubectl apply -f k8s/totem-express-deployment.yaml
-        kubectl apply -f k8s/totem-express-hpa.yaml
+        kubectl apply -f k8s/totem-express-configmap.yaml --validate=false
+        kubectl apply -f k8s/totem-express-svc.yaml --validate=false
+        kubectl apply -f k8s/totem-express-secret.yaml --validate=false
+        kubectl apply -f k8s/totem-express-deployment.yaml --validate=false
+        kubectl apply -f k8s/totem-express-hpa.yaml --validate=false

@@ -14,10 +14,6 @@ spec:
       labels:
         app: totem-express
     spec              :
-      # initContainers:
-      #   - name: wait-for-mysql
-      #     image: appropriate/curl
-      #     command: [ 'sh', '-c', 'until nc -z -v -w30 totem-express-db-svc 3306; do echo "Waiting for MySQL..."; sleep 1; done;' ]
       containers:
         - name: totem-express
           image: DOCKER_IMAGE

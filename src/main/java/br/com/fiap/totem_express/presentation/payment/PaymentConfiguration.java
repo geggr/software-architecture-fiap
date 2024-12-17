@@ -4,7 +4,7 @@ import br.com.fiap.totem_express.application.payment.*;
 import br.com.fiap.totem_express.application.payment.impl.CheckPaymentStatusUseCaseImpl;
 import br.com.fiap.totem_express.application.payment.impl.ProcessPaymentWebhookUseCaseImpl;
 import br.com.fiap.totem_express.infrastructure.payment.*;
-import br.com.fiap.totem_express.infrastructure.payment.mercadopago.MercadoPagoGateway;
+import br.com.fiap.totem_express.infrastructure.payment.mock.FakePaymentGateway;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.client.RestTemplate;
@@ -37,6 +37,6 @@ public class PaymentConfiguration {
 
     @Bean
     PaymentProcessorGateway qrCodeGateway() {
-        return new MercadoPagoGateway(restTemplate);
+        return new FakePaymentGateway();
     }
 }

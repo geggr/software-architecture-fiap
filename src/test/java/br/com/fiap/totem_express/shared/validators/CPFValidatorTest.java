@@ -22,13 +22,13 @@ public class CPFValidatorTest {
     }
 
     @Test
-    void testValidCPFs() {
+    void should_accept_valid_cpfs() {
         assertThat(CPFValidator.validate("52998224725")).isTrue();
         assertThat(CPFValidator.validate("12345678909")).isTrue();
     }
 
     @Test
-    void testCPFsWithSpecialCharacters() {
+    void should_validate_even_using_punctuation() {
         assertThat(CPFValidator.validate("529.982.247-25")).isTrue();
         assertThat(CPFValidator.validate("123.456.789-09")).isTrue();
         assertThat(CPFValidator.validate("529.982.247-24")).isFalse();
